@@ -1,0 +1,66 @@
+# ========================================
+# 🧱 Android & Kotlin .gitignore
+# ========================================
+
+# Gradle
+.gradle/
+build/
+**/build/
+
+# Local configuration
+local.properties
+.gradle/
+.idea/
+.DS_Store
+*.iml
+
+# Log files
+*.log
+
+# Android Studio
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.aab
+
+# Keystore files
+*.jks
+*.keystore
+
+# IntelliJ/Android Studio
+.idea/
+*.iws
+*.ipr
+
+# Generated files
+navigation.xml
+output.json
+
+# App Signing
+signing/
+app/debug/
+app/release/
+
+# Gradle cache
+.gradle/
+gradle-app.setting
+
+# Kotlin-specific
+*.kotlin_module
+
+# OS files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# JetBrains IDE settings
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/gradle.xml
+.idea/**/libraries
+.idea/caches/
+.idea/modules.xml
+
+# Misc
+*.hprof
