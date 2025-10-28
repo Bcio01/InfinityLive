@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Fondos -->
+    <color name="background">#0B1220</color>
+    <color name="surface">#0F1724</color>
+    <color name="divider">#23303E</color>
+
+    <!-- principales -->
+    <color name="achievement">#5B42FF</color>
+    <color name="acent">#00D4FF</color>
+    <color name="primary">#FFC857</color>
+
+    <!-- Informacion -->
+    <color name="penalty">#FF6B6B</color>
+    <color name="success">#22C55E</color>
+    <color name="warning">#FFB020</color>
+
+    <!-- Textos -->
+    <color name="text_primary">#E6EEF3</color>
+    <color name="text_secondary">#AAB6C2</color>
+</resources>

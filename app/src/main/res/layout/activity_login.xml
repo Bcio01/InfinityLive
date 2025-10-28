@@ -1,0 +1,93 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@drawable/fondo">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center">
+
+        <!-- Título -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Iniciar Sesión"
+            android:textColor="@color/acent"
+            android:textSize="34sp"
+            android:textStyle="bold" />
+
+        <!-- Divider -->
+        <View
+            android:id="@+id/divider"
+            android:layout_width="180sp"
+            android:layout_height="5sp"
+            android:background="@color/divider"/>
+
+        <!-- Input correo -->
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50sp"
+            android:hint="Correo"
+            android:inputType="textEmailAddress"
+            android:background="@drawable/rounded_input"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary"/>
+
+        <!-- Input contraseña -->
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Contraseña"
+            android:inputType="textPassword"
+            android:background="@drawable/rounded_input"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary"/>
+
+        <!-- Botón -->
+        <Button
+            android:id="@+id/btnAcceder"
+            android:layout_width="200sp"
+            android:layout_height="50sp"
+            android:layout_marginTop="40dp"
+            android:text="Acceder"
+            android:textSize="20sp"
+            android:backgroundTint="@color/achievement"
+            android:textColor="@color/text_primary"/>
+
+        <!-- redirigir -->
+        <LinearLayout
+            android:id="@+id/redirigir"
+            android:layout_width="match_parent"
+            android:layout_height="50sp"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12sp"
+                android:text="¿No tienes Cuenta? "
+                android:textSize="16sp"
+                android:textColor="@color/text_primary"/>
+
+            <TextView
+                android:id="@+id/tvRegistrate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12sp"
+                android:text=" Registrate!"
+                android:textSize="16sp"
+                android:textColor="@color/primary"/>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+</ScrollView>
