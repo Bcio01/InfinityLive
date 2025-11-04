@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "565452676277",
+    "project_id": "infinityliveapp",
+    "storage_bucket": "infinityliveapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:565452676277:android:efa58364c697930f4572fc",
+        "android_client_info": {
+          "package_name": "com.saamael.infinitylive"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "565452676277-lov9g5cbmdu3vh8hj8b48bsvqb6r7tl5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgbM-HOOCFA_d4kg2Sq7gqPlc2eQ75a-8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "565452676277-lov9g5cbmdu3vh8hj8b48bsvqb6r7tl5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
