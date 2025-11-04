@@ -73,16 +73,23 @@ class RegisterActivity : AppCompatActivity() {
                     user.updateProfile(profileUpdates)
                         .addOnCompleteListener { profileTask ->
                             if (profileTask.isSuccessful) {
+
                                 user.sendEmailVerification()
                                     .addOnCompleteListener { verificationTask ->
+                                        // No importa si el correo falla o no, el usuario debe avanzar
                                         if (verificationTask.isSuccessful) {
-                                            Toast.makeText(this, "¡Registro exitoso! Revisa tu correo para verificar la cuenta.", Toast.LENGTH_LONG).show()
+                                            Toast.makeText(this, "¡Registro exitoso! Revisa tu correo.", Toast.LENGTH_LONG).show()
+                                        } else {
+                                            Toast.makeText(this, "Registro exitoso. Falló el envío de verificación.", Toast.LENGTH_SHORT).show()
                                         }
-                                    }
 
-                                val intent = Intent(this, SelectAreaActivity::class.java)
-                                startActivity(intent)
-                                finishAffinity()
+                                        // --- MUEVE LAS LÍNEAS AQUÍ ---
+                                        // Navega a SelectArea SÓLO DESPUÉS de que el correo se envió
+                                        val intent = Intent(this, SelectAreaActivity::class.java)
+                                        startActivity(intent)
+                                        finishAffinity()
+                                        // ---
+                                    }
                             }
                         }
                 } else {

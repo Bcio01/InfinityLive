@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sideMenuScroll"
+    android:layout_width="300dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:background="@color/surface"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:id="@+id/sideMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <LinearLayout
+            android:id="@+id/userMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/imgUserIcon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/usericon"
+                android:layout_marginEnd="20dp"
+                android:contentDescription="Icono de Usuario"/>
+
+            <TextView
+                android:id="@+id/tvUserName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nombre Usuario"
+                android:textColor="@color/acent"
+                android:textSize="20sp"
+                android:padding="8dp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/divider"/>
+
+        <LinearLayout
+            android:id="@+id/inicioMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:gravity="center_vertical">
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/homeicon"
+                android:layout_marginEnd="12dp"
+                android:contentDescription="Icono de Home"/>
+            <TextView
+                android:id="@+id/tvMenuInicio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Inicio"
+                android:textColor="@color/text_primary"
+                android:textSize="16sp"
+                android:padding="8dp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/areasMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:gravity="center_vertical">
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/listicon"
+                android:layout_marginEnd="12dp"
+                android:contentDescription="Icono de Lista"/>
+            <TextView
+                android:id="@+id/tvMenuAreas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Áreas Clave"
+                android:textColor="@color/text_primary"
+                android:textSize="16sp"
+                android:padding="8dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/subMenuAreas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="50dp"
+            android:visibility="gone">
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tiendaMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:gravity="center_vertical">
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/storeicon"
+                android:layout_marginEnd="12dp"
+                android:contentDescription="Icono de Tienda"/>
+            <TextView
+                android:id="@+id/tvMenuTienda"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tienda"
+                android:textColor="@color/text_primary"
+                android:textSize="16sp"
+                android:padding="8dp" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/divider"/>
+
+        <LinearLayout
+            android:id="@+id/logoutMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="40dp"
+            android:gravity="center_vertical">
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/logouticon"
+                android:layout_marginEnd="12dp"
+                android:contentDescription="Icono de Logout"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cerrar Sesión"
+                android:textColor="@color/warning"
+                android:textSize="18sp"
+                android:padding="8dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

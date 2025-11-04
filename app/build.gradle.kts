@@ -66,6 +66,13 @@ dependencies {
     // Google Sign-In - ACTUALIZADO
     implementation("com.google.android.gms:play-services-auth:21.4.0")
 
+    implementation("com.firebaseui:firebase-ui-firestore:8.0.2")
+
+    // --- AÑADE ESTA LÍNEA ---
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+    // ---
+
+    implementation(libs.androidx.lifecycle.livedata.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

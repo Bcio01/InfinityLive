@@ -11,49 +11,44 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.InfinityLive">
+
+        <activity
+            android:name=".BaseActivity"
+            android:exported="false" />
+
         <activity
             android:name=".TiendaActivity"
             android:exported="false" />
-        <activity
-            android:name=".Area5Activity"
-            android:exported="false" />
-        <activity
-            android:name=".Area4Activity"
-            android:exported="false" />
-        <activity
-            android:name=".Area3Activity"
-            android:exported="false" />
-        <activity
-            android:name=".Area2Activity"
-            android:exported="false" />
-        <activity
-            android:name=".Area1Activity"
-            android:exported="false" />
+
         <activity
             android:name=".SelectAreaActivity"
             android:exported="false" />
+
         <activity
             android:name=".InicioActivity"
             android:exported="false"
             android:label="@string/title_activity_menu"
             android:theme="@style/Theme.InfinityLive.NoActionBar" />
+
         <activity
             android:name=".RegisterActivity"
             android:exported="false"
             android:label="@string/title_activity_register"
             android:theme="@style/Theme.InfinityLive.NoActionBar" />
+
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>
