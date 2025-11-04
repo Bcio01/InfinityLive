@@ -1,18 +1,20 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="@drawable/fondo">
+    android:background="@drawable/fondo"
+    tools:context=".LoginActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="vertical"
-        android:padding="24dp"
-        android:gravity="center">
+        android:padding="24dp">
 
-        <!-- Título -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -21,47 +23,60 @@
             android:textSize="34sp"
             android:textStyle="bold" />
 
-        <!-- Divider -->
         <View
             android:id="@+id/divider"
             android:layout_width="180sp"
             android:layout_height="5sp"
-            android:background="@color/divider"/>
+            android:background="@color/divider" />
 
-        <!-- Input correo -->
         <EditText
+            android:id="@+id/etCorreo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50sp"
+            android:background="@drawable/rounded_input"
             android:hint="Correo"
             android:inputType="textEmailAddress"
-            android:background="@drawable/rounded_input"
             android:textColor="@color/text_primary"
-            android:textColorHint="@color/text_secondary"/>
+            android:textColorHint="@color/text_secondary" />
 
-        <!-- Input contraseña -->
         <EditText
+            android:id="@+id/etContrasena"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:background="@drawable/rounded_input"
             android:hint="Contraseña"
             android:inputType="textPassword"
-            android:background="@drawable/rounded_input"
             android:textColor="@color/text_primary"
-            android:textColorHint="@color/text_secondary"/>
+            android:textColorHint="@color/text_secondary" />
 
-        <!-- Botón -->
         <Button
             android:id="@+id/btnAcceder"
             android:layout_width="200sp"
             android:layout_height="50sp"
             android:layout_marginTop="40dp"
-            android:text="Acceder"
-            android:textSize="20sp"
             android:backgroundTint="@color/achievement"
-            android:textColor="@color/text_primary"/>
+            android:text="Acceder"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp" />
 
-        <!-- redirigir -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnGoogleSignIn"
+            android:layout_width="200sp"
+            android:layout_height="55sp"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/surface"
+            android:text="Continuar con Google"
+            android:textColor="@color/text_primary"
+            android:textSize="14sp"
+
+            app:icon="@drawable/ic_google_logo"
+            app:iconGravity="textStart"
+            app:iconPadding="10dp"
+            app:iconSize="30dp"
+            app:iconTint="@null" />
+
         <LinearLayout
             android:id="@+id/redirigir"
             android:layout_width="match_parent"
@@ -73,8 +88,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12sp"
                 android:text="¿No tienes Cuenta? "
-                android:textSize="16sp"
-                android:textColor="@color/text_primary"/>
+                android:textColor="@color/text_primary"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tvRegistrate"
@@ -82,12 +97,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12sp"
                 android:text=" Registrate!"
-                android:textSize="16sp"
-                android:textColor="@color/primary"/>
+                android:textColor="@color/primary"
+                android:textSize="16sp" />
 
         </LinearLayout>
-
-
-
     </LinearLayout>
 </ScrollView>

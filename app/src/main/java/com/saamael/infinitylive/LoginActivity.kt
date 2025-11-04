@@ -1,41 +1,149 @@
 package com.saamael.infinitylive
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
+import com.saamael.infinitylive.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
+
+    private lateinit var mAuth: FirebaseAuth
+    private lateinit var mGoogleSignInClient: GoogleSignInClient
+    private lateinit var googleSignInLauncher: ActivityResultLauncher<Intent>
+    private lateinit var binding: ActivityLoginBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_login)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        // Inicializar Firebase Auth
+        mAuth = FirebaseAuth.getInstance()
+
+        // --- 1. LÓGICA DE LOGIN CON EMAIL/CONTRASEÑA (CORREGIDO) ---
+        binding.btnAcceder.setOnClickListener {
+            // Esto ahora llama a la función correcta
+            iniciarSesionEmailPassword()
         }
 
-        // Login
-        val tvRedirigir = findViewById<TextView>(R.id.tvRegistrate)
-        // escuchar el evento
-        tvRedirigir.setOnClickListener {
-            // instancia de Intent y pasar la Clase LoginActivity como parametro
+        // --- 2. LÓGICA DE REGISTRO ---
+        binding.tvRegistrate.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
 
-        // Acceder
-        val btnAcceder = findViewById<Button>(R.id.btnAcceder)
-        // escuchar el evento
-        btnAcceder.setOnClickListener {
-            // instancia de Intent y pasar la Clase LoginActivity como parametro
-            val intent = Intent(this, SelectAreaActivity::class.java)
-            startActivity(intent)
+        // --- 3. LÓGICA DE LOGIN CON GOOGLE ---
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+
+        googleSignInLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+                try {
+                    val account = task.getResult(ApiException::class.java)!!
+                    firebaseAuthWithGoogle(account.idToken!!)
+                } catch (e: ApiException) {
+                    Toast.makeText(this, "Falló el inicio de sesión con Google", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
+
+        // Asignar clic al botón de Google
+        binding.btnGoogleSignIn.setOnClickListener {
+            // Llama a la función de Google
+            signInGoogle()
+        }
+    }
+
+    // --- FUNCIÓN PARA INICIAR SESIÓN CON EMAIL/PASS ---
+    private fun iniciarSesionEmailPassword() {
+        // Ahora podemos leer los IDs gracias al Paso 1
+        val email = binding.etCorreo.text.toString().trim()
+        val password = binding.etContrasena.text.toString().trim()
+
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Ingresa email y contraseña", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        mAuth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    val user = mAuth.currentUser
+                    if (user != null) {
+                        checkUserExists(user) // Revisa si es usuario nuevo o antiguo
+                    }
+                } else {
+                    Toast.makeText(this, "Error: ${task.exception?.message}", Toast.LENGTH_LONG).show()
+                }
+            }
+    }
+
+    // --- FUNCIONES PARA INICIAR SESIÓN CON GOOGLE ---
+    private fun signInGoogle() {
+        val signInIntent = mGoogleSignInClient.signInIntent
+        googleSignInLauncher.launch(signInIntent)
+    }
+
+    private fun firebaseAuthWithGoogle(idToken: String) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        mAuth.signInWithCredential(credential)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    val user = mAuth.currentUser
+                    if (user != null) {
+                        checkUserExists(user) // Revisa si es usuario nuevo o antiguo
+                    }
+                } else {
+                    Toast.makeText(this, "Falló la autenticación: ${task.exception?.message}", Toast.LENGTH_LONG).show()
+                }
+            }
+    }
+
+    // --- FUNCIÓN DE VERIFICACIÓN (NO CAMBIA) ---
+    private fun checkUserExists(user: FirebaseUser) {
+        val db = FirebaseFirestore.getInstance()
+        val userDocRef = db.collection("users").document(user.uid)
+
+        userDocRef.get()
+            .addOnSuccessListener { documentSnapshot ->
+                if (documentSnapshot.exists()) {
+                    goToInicioActivity() // Usuario antiguo
+                } else {
+                    goToSelectAreaActivity() // Usuario nuevo
+                }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Error al verificar usuario: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+    }
+
+    private fun goToInicioActivity() {
+        val intent = Intent(this, InicioActivity::class.java)
+        startActivity(intent)
+        finishAffinity()
+    }
+
+    private fun goToSelectAreaActivity() {
+        val intent = Intent(this, SelectAreaActivity::class.java)
+        startActivity(intent)
+        finishAffinity()
     }
 }

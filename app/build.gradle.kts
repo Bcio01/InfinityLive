@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    // Add the Google services Gradle plugin
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -49,6 +51,20 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+
+// --- DEPENDENCIAS DE FIREBASE ACTUALIZADAS ---
+
+    // Importa el BOM (Bill of Materials) - ACTUALIZADO
+    implementation(platform("com.google.firebase:firebase-bom:34.5.0"))
+
+    // Auth - Ya no se usa el sufijo '-ktx'
+    implementation("com.google.firebase:firebase-auth")
+
+    // Firestore - Ya no se usa el sufijo '-ktx'
+    implementation("com.google.firebase:firebase-firestore")
+
+    // Google Sign-In - ACTUALIZADO
+    implementation("com.google.android.gms:play-services-auth:21.4.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -54,8 +54,7 @@
 
         <!-- Input contraseña -->
         <EditText
-            android:id="@+id/etContraseña"
-            android:layout_width="match_parent"
+            android:id="@+id/etContrasena"  android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:hint="Contraseña"
@@ -64,10 +63,8 @@
             android:textColor="@color/text_primary"
             android:textColorHint="@color/text_secondary"/>
 
-        <!-- confirmar contraseña -->
         <EditText
-            android:id="@+id/etConfirmarContraseña"
-            android:layout_width="match_parent"
+            android:id="@+id/etConfirmarContrasena" android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:hint="Confirmar Contraseña"

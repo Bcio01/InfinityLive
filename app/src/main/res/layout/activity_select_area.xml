@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
@@ -12,14 +12,11 @@
         android:padding="24dp"
         android:gravity="center_horizontal">
 
-        <!-- Título -->
-
-        <!-- Divider -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40sp"
-            android:text="Areas"
+            android:text="Tus Áreas Clave"
             android:textColor="@color/acent"
             android:textSize="34sp"
             android:textStyle="bold" />
@@ -30,98 +27,133 @@
             android:layout_height="5sp"
             android:background="@color/divider"/>
 
-        <!-- redirigir -->
         <LinearLayout
-            android:id="@+id/redirigir"
             android:layout_width="match_parent"
-            android:layout_height="100sp"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
-            android:layout_marginTop="40sp">
+            android:layout_marginTop="20sp"
+            android:layout_marginBottom="20sp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Debes ingresar 5 areas que deseas mejorar (Ej: salud, amor, deporte, finanzas, etc.). Estas areas son a elección propia por lo que se recomienda pensarlo bien."
+                android:text="Define las 9 áreas de tu vida que deseas mejorar (Ej: Salud, Finanzas, Familia, Vida Espiritual)."
                 android:textSize="16sp"
                 android:textColor="@color/text_primary"
                 android:gravity="center_horizontal"/>
 
         </LinearLayout>
 
-        <!-- Area 1 -->
         <EditText
             android:id="@+id/etArea1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40sp"
+            android:layout_marginTop="16sp"
             android:background="@drawable/rounded_input"
-            android:hint="Area 1"
-            android:inputType="textEmailAddress"
+            android:hint="Área 1 (Ej: Vida Espiritual)"
+            android:inputType="textCapSentences"
             android:textColor="@color/text_primary"
             android:textColorHint="@color/text_secondary" />
 
-        <!-- Area 2 -->
         <EditText
             android:id="@+id/etArea2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16sp"
-            android:hint="Area 2"
-            android:inputType="textEmailAddress"
+            android:hint="Área 2 (Ej: Familia)"
+            android:inputType="textCapSentences"
             android:background="@drawable/rounded_input"
             android:textColor="@color/text_primary"
             android:textColorHint="@color/text_secondary"/>
 
-        <!-- Area 3 -->
         <EditText
             android:id="@+id/etArea3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="Area3"
-            android:inputType="textPassword"
+            android:hint="Área 3 (Ej: Salud)"
+            android:inputType="textCapSentences"
             android:background="@drawable/rounded_input"
             android:textColor="@color/text_primary"
             android:textColorHint="@color/text_secondary"/>
 
-        <!-- Area 4 -->
         <EditText
             android:id="@+id/etArea4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="Area 4"
-            android:inputType="textPassword"
+            android:hint="Área 4 (Ej: Finanzas)"
+            android:inputType="textCapSentences"
             android:background="@drawable/rounded_input"
             android:textColor="@color/text_primary"
             android:textColorHint="@color/text_secondary"/>
 
-        <!-- Area 5 -->
         <EditText
             android:id="@+id/etArea5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="Area 5"
-            android:inputType="textPassword"
+            android:hint="Área 5 (Ej: Relaciones)"
+            android:inputType="textCapSentences"
             android:background="@drawable/rounded_input"
             android:textColor="@color/text_primary"
             android:textColorHint="@color/text_secondary"/>
 
+        <EditText
+            android:id="@+id/etArea6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Área 6 (Ej: Crecimiento Personal)"
+            android:inputType="textCapSentences"
+            android:background="@drawable/rounded_input"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary"/>
 
-        <!-- Botón -->
+        <EditText
+            android:id="@+id/etArea7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Área 7 (Ej: Trabajo)"
+            android:inputType="textCapSentences"
+            android:background="@drawable/rounded_input"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary"/>
+
+        <EditText
+            android:id="@+id/etArea8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Área 8 (Ej: Ocio)"
+            android:inputType="textCapSentences"
+            android:background="@drawable/rounded_input"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary"/>
+
+        <EditText
+            android:id="@+id/etArea9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Área 9 (Ej: Propósito)"
+            android:inputType="textCapSentences"
+            android:background="@drawable/rounded_input"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary"/>
+
         <Button
             android:id="@+id/btnConfirmarAreas"
             android:layout_width="200sp"
             android:layout_height="50sp"
             android:layout_marginTop="40dp"
-            android:text="Confirmar Areas"
+            android:layout_marginBottom="40dp"
+            android:text="Confirmar Áreas"
             android:textSize="20sp"
             android:backgroundTint="@color/achievement"
             android:textColor="@color/text_primary"/>
-
-
 
     </LinearLayout>
 </ScrollView>
