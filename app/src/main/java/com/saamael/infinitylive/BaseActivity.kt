@@ -77,6 +77,34 @@ open class BaseActivity : AppCompatActivity() {
             baseBinding.drawerLayout.closeDrawer(GravityCompat.START)
         }
 
+        // Clic en el TÍTULO "Hábitos y Castigos" (para expandir)
+        bindingMenu.habitosMenu.setOnClickListener {
+            if (bindingMenu.subMenuHabitos.visibility == View.GONE) {
+                bindingMenu.subMenuHabitos.visibility = View.VISIBLE
+            } else {
+                bindingMenu.subMenuHabitos.visibility = View.GONE
+            }
+        }
+
+        // Clic en la opción "Añadir Hábito"
+                bindingMenu.tvMenuAnadirHabito.setOnClickListener {
+                    val intent = Intent(this, GestionHabitosActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                    startActivity(intent)
+                    baseBinding.drawerLayout.closeDrawer(GravityCompat.START)
+                }
+
+        // Clic en la opción "Gestionar Castigos"
+                bindingMenu.tvMenuGestionarCastigos.setOnClickListener {
+                    // TODO: Crearemos esta actividad en la rama "funcionalidad/muerte-y-castigos"
+
+                    // Por ahora, creamos el intent y la actividad vacía para que no crashee
+                    val intent = Intent(this, GestionCastigosActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                    startActivity(intent)
+                    baseBinding.drawerLayout.closeDrawer(GravityCompat.START)
+                }
+
         bindingMenu.logoutMenu.setOnClickListener {
             mAuth.signOut()
             val intent = Intent(this, LoginActivity::class.java)

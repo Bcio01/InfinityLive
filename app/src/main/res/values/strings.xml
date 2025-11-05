@@ -2,7 +2,9 @@
     <string name="app_name">InfinityLive</string>
     <string name="default_web_client_id">565452676277-lov9g5cbmdu3vh8hj8b48bsvqb6r7tl5.apps.googleusercontent.com</string>
     <string name="title_activity_register">register</string>
+    <string name="desc_icono_habitos">Icono de Hábitos y Castigos</string>
     <string name="large_text">
+
         "Material is the metaphor.\n\n"
 
         "A material metaphor is the unifying theory of a rationalized space and a system of motion."

@@ -12,12 +12,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.InfinityLive">
 
+
         <activity
             android:name=".BaseActivity"
             android:exported="false" />
 
         <activity
             android:name=".TiendaActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".GestionHabitosActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".GestionCastigosActivity"
             android:exported="false" />
 
         <activity
