@@ -11,6 +11,9 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.saamael.infinitylive.databinding.ActivityInicioBinding
+import android.app.ActivityManager
+import android.content.Context
+
 
 // 2. IMPLEMENTA LAS INTERFACES DE LOS ADAPTADORES
 class InicioActivity : BaseActivity(),
@@ -27,6 +30,7 @@ class InicioActivity : BaseActivity(),
 
     // Variable para guardar los datos del usuario (HP y Áreas)
     private var currentHp: Long = 1000L
+    private var currentMonedas: Long = 0L
     private val areasUsuario = mutableMapOf<String, Area>() // <AreaID, Objeto Area>
 
 
@@ -59,11 +63,11 @@ class InicioActivity : BaseActivity(),
                 if (snapshot != null && snapshot.exists()) {
                     val nombre = snapshot.getString("nombre")
                     currentHp = snapshot.getLong("avatar_hp") ?: 1000L // Actualiza el HP
-                    val monedas = snapshot.getLong("monedas") ?: 0L
+                    currentMonedas = snapshot.getLong("monedas") ?: 0L
 
                     binding.tvNombreUsuario.text = nombre
                     binding.tvHp.text = "$currentHp / 1000"
-                    binding.tvMonedas.text = monedas.toString()
+                    binding.tvMonedas.text = currentMonedas.toString()
                     bindingMenu.tvUserName.text = nombre
 
                     // Comprobar si el usuario está muerto al cargar
@@ -217,23 +221,40 @@ class InicioActivity : BaseActivity(),
      * Revisa si el avatar "murió" (HP <= 0).
      */
     private fun checkAvatarStatus() {
-        if (currentHp <= 0) {
-            // ¡EL AVATAR MURIÓ!
-            // TODO: En la rama "funcionalidad/muerte-y-castigos",
-            // esto lo mandará a la pantalla 'RevivirActivity'.
+        // Esta comprobación evita que la RevivirActivity se lance múltiples veces
+        // si el HP sigue en 0 mientras la actividad ya está abierta.
+        if (currentHp <= 0 && !isActivityRunning(RevivirActivity::class.java)) {
 
-            // Por ahora, mostramos una alerta y reseteamos la vida
-            AlertDialog.Builder(this)
-                .setTitle("¡Has Caído!")
-                .setMessage("Tu avatar ha perdido toda su vida. Deberías cumplir un castigo. (Reseteando HP a 1000 por ahora).")
-                .setPositiveButton("Entendido") { dialog, _ ->
-                    // Resetea el HP
-                    db.collection("users").document(uid!!).update("avatar_hp", 1000L)
-                    dialog.dismiss()
-                }
-                .setCancelable(false) // Evita que el usuario cierre la alerta
-                .show()
+            // ¡EL AVATAR MURIÓ!
+            // Lanza la pantalla de bloqueo (RevivirActivity)
+            val intent = Intent(this, RevivirActivity::class.java)
+            // Pasamos el total de monedas a la pantalla de muerte
+            intent.putExtra("MONEDAS_ACTUALES", currentMonedas)
+
+            // Estos flags evitan que el usuario pueda volver a InicioActivity
+            // y borran el historial de navegación.
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+
+            // Cierra la InicioActivity actual para que no se quede "debajo"
+            finish()
         }
+    }
+
+    /**
+     * Función de utilidad para comprobar si una actividad ya está en la pantalla.
+     */
+    private fun isActivityRunning(activityClass: Class<*>): Boolean {
+        val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        // Nota: getRunningTasks está obsoleto, pero es la forma más simple
+        // para este caso de uso específico.
+        val tasks = activityManager.getRunningTasks(Integer.MAX_VALUE)
+        for (task in tasks) {
+            if (task.baseActivity?.className == activityClass.name) {
+                return true
+            }
+        }
+        return false
     }
 
     // ... (highlightActiveMenuItem, onStart, onStop) ...

@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.GET_TASKS" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,43 +14,40 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.InfinityLive">
 
-
         <activity
             android:name=".BaseActivity"
             android:exported="false" />
-
         <activity
             android:name=".TiendaActivity"
             android:exported="false" />
-
         <activity
             android:name=".GestionHabitosActivity"
             android:exported="false" />
-
         <activity
             android:name=".GestionCastigosActivity"
             android:exported="false" />
 
         <activity
+            android:name=".RevivirActivity"
+            android:exported="false"
+            android:theme="@style/Theme.InfinityLive.NoActionBar" />
+
+        <activity
             android:name=".SelectAreaActivity"
             android:exported="false" />
-
         <activity
             android:name=".InicioActivity"
             android:exported="false"
             android:label="@string/title_activity_menu"
             android:theme="@style/Theme.InfinityLive.NoActionBar" />
-
         <activity
             android:name=".RegisterActivity"
             android:exported="false"
             android:label="@string/title_activity_register"
             android:theme="@style/Theme.InfinityLive.NoActionBar" />
-
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
-
         <activity
             android:name=".MainActivity"
             android:exported="true">
