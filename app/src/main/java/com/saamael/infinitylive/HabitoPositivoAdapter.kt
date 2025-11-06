@@ -10,23 +10,28 @@ import com.saamael.infinitylive.databinding.ItemHabitoPositivoBinding // Binding
 class HabitoPositivoAdapter(options: FirestoreRecyclerOptions<Habito>) :
     FirestoreRecyclerAdapter<Habito, HabitoPositivoAdapter.HabitoPositivoViewHolder>(options) {
 
-    // TODO: Programaremos este listener en la rama "funcionalidad/logica-juego"
-    // var onHabitoCompletado: ((String) -> Unit)? = null
+    // --- AÑADE ESTA INTERFAZ ---
+    // Esta es la "línea telefónica" para hablar con InicioActivity
+    interface OnHabitoPositivoListener {
+        fun onHabitoCompletado(habito: Habito)
+    }
+    // ---
+
+    // --- AÑADE ESTA VARIABLE ---
+    var listener: OnHabitoPositivoListener? = null
+    // ---
 
     inner class HabitoPositivoViewHolder(private val binding: ItemHabitoPositivoBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(habito: Habito) {
             binding.tvHabitoDescripcion.text = habito.descripcion
-
-            // Creamos el texto de la recompensa
-            // (En un futuro, podríamos buscar el nombre del área usando el 'area_id')
             binding.tvHabitoRecompensa.text = "+${habito.xp_ganada} XP | +${habito.monedas_ganadas} Monedas"
 
-            // TODO: Programar el clic del botón
+            // --- AHORA PROGRAMAMOS EL CLIC ---
             binding.btnCompletarHabito.setOnClickListener {
-                // Aquí llamaremos a la función para sumar XP y monedas
-                // onHabitoCompletado?.invoke(getItem(adapterPosition).id)
+                // Llama a la "línea telefónica" y pasa el hábito
+                listener?.onHabitoCompletado(getItem(adapterPosition))
             }
         }
     }

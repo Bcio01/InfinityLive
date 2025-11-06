@@ -10,8 +10,15 @@ import com.saamael.infinitylive.databinding.ItemHabitoNegativoBinding // Binding
 class HabitoNegativoAdapter(options: FirestoreRecyclerOptions<Habito>) :
     FirestoreRecyclerAdapter<Habito, HabitoNegativoAdapter.HabitoNegativoViewHolder>(options) {
 
-    // TODO: Programaremos este listener en la rama "funcionalidad/logica-juego"
-    // var onHabitoCometido: ((String) -> Unit)? = null
+    // --- AÑADE ESTA INTERFAZ ---
+    interface OnHabitoNegativoListener {
+        fun onHabitoCometido(habito: Habito)
+    }
+    // ---
+
+    // --- AÑADE ESTA VARIABLE ---
+    var listener: OnHabitoNegativoListener? = null
+    // ---
 
     inner class HabitoNegativoViewHolder(private val binding: ItemHabitoNegativoBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -20,10 +27,10 @@ class HabitoNegativoAdapter(options: FirestoreRecyclerOptions<Habito>) :
             binding.tvHabitoDescripcion.text = habito.descripcion
             binding.tvHabitoCastigo.text = "-${habito.hp_perdida} HP"
 
-            // TODO: Programar el clic del botón
+            // --- AHORA PROGRAMAMOS EL CLIC ---
             binding.btnCometerHabito.setOnClickListener {
-                // Aquí llamaremos a la función para restar HP
-                // onHabitoCometido?.invoke(getItem(adapterPosition).id)
+                // Llama a la "línea telefónica" y pasa el hábito
+                listener?.onHabitoCometido(getItem(adapterPosition))
             }
         }
     }
