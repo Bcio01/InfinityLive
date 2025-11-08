@@ -68,9 +68,9 @@ dependencies {
 
     implementation("com.firebaseui:firebase-ui-firestore:8.0.2")
 
-    // --- AÑADE ESTA LÍNEA ---
     implementation("androidx.recyclerview:recyclerview:1.3.2")
-    // ---
+
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 
     implementation(libs.androidx.lifecycle.livedata.ktx)
     testImplementation(libs.junit)

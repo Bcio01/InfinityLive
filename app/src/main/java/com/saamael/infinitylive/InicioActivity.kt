@@ -13,6 +13,8 @@ import com.google.firebase.firestore.Query
 import com.saamael.infinitylive.databinding.ActivityInicioBinding
 import android.app.ActivityManager
 import android.content.Context
+import com.saamael.infinitylive.db.PerfilContract
+import com.saamael.infinitylive.db.PerfilDbHelper
 
 
 // 2. IMPLEMENTA LAS INTERFACES DE LOS ADAPTADORES
@@ -47,10 +49,22 @@ class InicioActivity : BaseActivity(),
             setupUserProfileListener()
             setupAreaRecyclerView()
             setupHabitosRecyclerView()
-
+            cargarFotoPerfilDashboard()
+            // --- AÑADE ESTE CLIC ---
+            binding.tvNombreUsuario.setOnClickListener {
+                val intent = Intent(this, PerfilActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                startActivity(intent)
+            }
         } else {
 
         }
+    }
+    override fun onResume() {
+        super.onResume()
+        // (BaseActivity.onResume se encargará del menú)
+        // Esto se encarga del avatar del dashboard:
+        cargarFotoPerfilDashboard()
     }
 
     // --- Configuración del Dashboard ---
@@ -68,7 +82,7 @@ class InicioActivity : BaseActivity(),
                     binding.tvNombreUsuario.text = nombre
                     binding.tvHp.text = "$currentHp / 1000"
                     binding.tvMonedas.text = currentMonedas.toString()
-                    bindingMenu.tvUserName.text = nombre
+
 
                     // Comprobar si el usuario está muerto al cargar
                     checkAvatarStatus()
@@ -76,6 +90,29 @@ class InicioActivity : BaseActivity(),
             }
     }
 
+    // Pega esta nueva función en InicioActivity.kt
+    private fun cargarFotoPerfilDashboard() {
+        val dbHelper = PerfilDbHelper(this)
+        val db = dbHelper.readableDatabase
+        val cursor: android.database.Cursor = db.rawQuery(
+            "SELECT * FROM ${PerfilContract.Entry.TABLE_NAME} WHERE ${PerfilContract.Entry.COLUMN_ID} = 1",
+            null
+        )
+
+        if (cursor.moveToFirst()) {
+            val pathFoto = cursor.getString(cursor.getColumnIndexOrThrow(PerfilContract.Entry.COLUMN_IMAGE_PATH))
+            if (!pathFoto.isNullOrEmpty()) {
+                com.bumptech.glide.Glide.with(this)
+                    .load(java.io.File(pathFoto))
+                    .circleCrop()
+                    .into(binding.imgAvatar) // <-- Actualiza el ícono del DASHBOARD
+            } else {
+                binding.imgAvatar.setImageResource(R.drawable.usericon)
+            }
+        }
+        cursor.close()
+
+    }
     private fun setupAreaRecyclerView() {
         val query: Query = db.collection("users").document(uid!!).collection("areas")
             .orderBy("nombre_area")

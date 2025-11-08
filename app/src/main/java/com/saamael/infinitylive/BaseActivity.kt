@@ -17,6 +17,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.saamael.infinitylive.databinding.ActivityBaseBinding // Se genera de activity_base.xml
 import com.saamael.infinitylive.databinding.LayoutSideMenuBinding // Se genera de layout_side_menu.xml
+import com.saamael.infinitylive.db.PerfilContract
+import com.saamael.infinitylive.db.PerfilDbHelper
 
 // "open" significa que otras clases pueden heredar de esta
 open class BaseActivity : AppCompatActivity() {
@@ -47,15 +49,68 @@ open class BaseActivity : AppCompatActivity() {
 
         // Configurar la navegación
         setupDrawerNavigation()
+        cargarDatosDelMenu()
     }
 
-    // --- ELIMINAMOS setActivityContent() ---
-    // La actividad hija se encargará de inflar y añadir su propia vista
+    override fun onResume() {
+        super.onResume()
+        // Vuelve a cargar la foto del menú CADA VEZ que la actividad se muestre
+        cargarDatosDelMenu()
+    }
+
+    // Pega esta nueva función en BaseActivity.kt
+    // (Reemplaza la antigua 'cargarFotoPerfilMenu')
+    protected fun cargarDatosDelMenu() {
+        // 1. Cargar Nombre de Firebase Auth (es lo más rápido)
+        val currentUser = mAuth.currentUser
+        if (currentUser != null && currentUser.displayName != null && currentUser.displayName!!.isNotEmpty()) {
+            bindingMenu.tvUserName.text = currentUser.displayName
+        } else {
+            // Si Auth no tiene el nombre, búscalo en Firestore (plan B)
+            if (uid != null) {
+                db.collection("users").document(uid!!).get().addOnSuccessListener { snapshot ->
+                    if (snapshot != null && snapshot.exists()) {
+                        bindingMenu.tvUserName.text = snapshot.getString("nombre")
+                    }
+                }
+            } else {
+                bindingMenu.tvUserName.text = "Usuario" // Fallback
+            }
+        }
+
+        // 2. Cargar Foto de SQLite (esto ya lo tenías)
+        val dbHelper = PerfilDbHelper(this)
+        val db = dbHelper.readableDatabase
+        val cursor: android.database.Cursor = db.rawQuery(
+            "SELECT * FROM ${PerfilContract.Entry.TABLE_NAME} WHERE ${PerfilContract.Entry.COLUMN_ID} = 1",
+            null
+        )
+
+        if (cursor.moveToFirst()) {
+            val pathFoto = cursor.getString(cursor.getColumnIndexOrThrow(PerfilContract.Entry.COLUMN_IMAGE_PATH))
+            if (!pathFoto.isNullOrEmpty()) {
+                com.bumptech.glide.Glide.with(this)
+                    .load(java.io.File(pathFoto))
+                    .circleCrop()
+                    .into(bindingMenu.imgUserIcon) // Actualiza el ícono del MENÚ
+            } else {
+                bindingMenu.imgUserIcon.setImageResource(R.drawable.usericon)
+            }
+        }
+        cursor.close()
+    }
 
     private fun setupDrawerNavigation() {
         // --- Clics de navegación estáticos ---
 
-        // En BaseActivity.kt, dentro de setupDrawerNavigation()
+        bindingMenu.userMenu.setOnClickListener {
+            val intent = Intent(this, PerfilActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+            startActivity(intent)
+            baseBinding.drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+
         bindingMenu.inicioMenu.setOnClickListener {
             val intent = Intent(this, InicioActivity::class.java)
             // --- AÑADE ESTA LÍNEA ---
@@ -65,6 +120,7 @@ open class BaseActivity : AppCompatActivity() {
             startActivity(intent)
             baseBinding.drawerLayout.closeDrawer(GravityCompat.START)
         }
+
 
         bindingMenu.tiendaMenu.setOnClickListener {
             // TODO: Crear TiendaActivity
@@ -124,6 +180,7 @@ open class BaseActivity : AppCompatActivity() {
 
         populateAreasSubMenu()
     }
+
 
     private fun populateAreasSubMenu() {
         if (uid == null) return // No hay usuario, no cargar nada
