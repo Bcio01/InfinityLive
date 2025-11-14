@@ -40,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:padding="16dp"
-                    android:text="Mi Perfil"
+                    android:text="@string/perfil_title"
                     android:textColor="@color/success"
                     android:textSize="20sp" />
             </LinearLayout>
@@ -71,13 +71,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="Cambiar Foto" />
+                    android:text="@string/perfil_img" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:text="Biografía"
+                    android:text="@string/perfil_biografia"
                     android:textColor="@color/acent"
                     android:textSize="16sp"/>
                 <EditText
@@ -86,7 +86,7 @@
                     android:layout_height="wrap_content"
                     android:minHeight="100dp"
                     android:gravity="top"
-                    android:hint="Cuéntanos sobre ti..."
+                    android:hint="@string/perfil_biografia_hint"
                     android:background="@drawable/rounded_input"
                     android:inputType="textMultiLine"
                     android:textColor="@color/text_primary"
@@ -96,7 +96,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:text="Estadísticas (Solo Lectura)"
+                    android:text="@string/perfil_stats"
                     android:textColor="@color/acent"
                     android:textSize="16sp"/>
                 <TextView
@@ -105,21 +105,21 @@
                     android:layout_height="wrap_content"
                     android:padding="12dp"
                     android:textColor="@color/text_secondary"
-                    tools:text="Nombre: Camilo Suarez"/>
+                    tools:text="@string/perfil_user"/>
                 <TextView
                     android:id="@+id/tvPerfilEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="12dp"
                     android:textColor="@color/text_secondary"
-                    tools:text="Email: c.suarez@gmail.com"/>
+                    tools:text="@string/perfil_correo"/>
                 <TextView
                     android:id="@+id/tvPerfilHp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="12dp"
                     android:textColor="@color/text_secondary"
-                    tools:text="HP: 1000 / 1000"/>
+                    tools:text="@string/perfil_hp"/>
 
                 <Button
                     android:id="@+id/btnGuardarPerfil"
@@ -127,7 +127,7 @@
                     android:layout_height="50sp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="40dp"
-                    android:text="Guardar Cambios"
+                    android:text="@string/perfil_btn"
                     android:backgroundTint="@color/achievement"/>
 
             </LinearLayout>

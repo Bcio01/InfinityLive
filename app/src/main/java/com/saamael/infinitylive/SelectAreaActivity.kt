@@ -18,7 +18,7 @@ class SelectAreaActivity : AppCompatActivity() {
     private lateinit var mAuth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
 
-    private val MIN_AREAS = 7
+    private val MIN_AREAS = 3
     private val MAX_AREAS = 12
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,7 +81,7 @@ class SelectAreaActivity : AppCompatActivity() {
             // Borra el último campo de texto añadido
             binding.layoutAreasDinamicas.removeViewAt(numeroActualDeAreas - 1)
         } else {
-            Toast.makeText(this, "Mínimo de 7 áreas requerido", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Mínimo de 3 áreas requerido", Toast.LENGTH_SHORT).show()
         }
     }
 

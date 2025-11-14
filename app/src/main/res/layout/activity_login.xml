@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="@drawable/fondo"
+    android:background="@color/background"
     tools:context=".LoginActivity">
 
     <LinearLayout
@@ -18,7 +18,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Iniciar Sesión"
+            android:text="@string/login_title"
             android:textColor="@color/acent"
             android:textSize="34sp"
             android:textStyle="bold" />
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50sp"
             android:background="@drawable/rounded_input"
-            android:hint="Correo"
+            android:hint="@string/login_correo"
             android:inputType="textEmailAddress"
             android:textColor="@color/text_primary"
             android:textColorHint="@color/text_secondary" />
@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/rounded_input"
-            android:hint="Contraseña"
+            android:hint="@string/login_contraseña"
             android:inputType="textPassword"
             android:textColor="@color/text_primary"
             android:textColorHint="@color/text_secondary" />
@@ -57,7 +57,7 @@
             android:layout_height="50sp"
             android:layout_marginTop="40dp"
             android:backgroundTint="@color/achievement"
-            android:text="Acceder"
+            android:text=""
             android:textColor="@color/text_primary"
             android:textSize="20sp" />
 
@@ -67,7 +67,7 @@
             android:layout_height="55sp"
             android:layout_marginTop="16dp"
             android:backgroundTint="@color/surface"
-            android:text="Continuar con Google"
+            android:text="@string/login_btn_google"
             android:textColor="@color/text_primary"
             android:textSize="14sp"
 
@@ -87,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12sp"
-                android:text="¿No tienes Cuenta? "
+                android:text="@string/login_redirect_text"
                 android:textColor="@color/text_primary"
                 android:textSize="16sp" />
 
@@ -96,7 +96,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12sp"
-                android:text=" Registrate!"
+                android:layout_marginLeft="8sp"
+                android:text="@string/login_redirect_url"
                 android:textColor="@color/primary"
                 android:textSize="16sp" />
 
