@@ -121,14 +121,35 @@
                     android:textColor="@color/text_secondary"
                     tools:text="HP: 1000 / 1000"/>
 
-                <Button
-                    android:id="@+id/btnGuardarPerfil"
-                    android:layout_width="200sp"
-                    android:layout_height="50sp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="40dp"
-                    android:text="Guardar Cambios"
-                    android:backgroundTint="@color/achievement"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center">
+
+                    <Button
+                        android:id="@+id/btnDescartarPerfil"
+                        android:layout_width="175sp"
+                        android:layout_height="50sp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginRight="10sp"
+                        android:text="Descartar Cambios"
+                        android:backgroundTint="@color/warning"/>
+
+
+                    <Button
+                        android:id="@+id/btnGuardarPerfil"
+                        android:layout_width="175sp"
+                        android:layout_height="50sp"
+                        android:layout_gravity="center_horizontal"
+                        android:text="Guardar Cambios"
+                        android:backgroundTint="@color/success"/>
+
+
+                </LinearLayout>
+
 
             </LinearLayout>
         </LinearLayout>
