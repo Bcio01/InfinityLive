@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/background"
+    android:orientation="vertical"
     tools:context=".PerfilActivity">
 
     <ScrollView
@@ -24,8 +24,8 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingStart="20sp"
-                android:paddingEnd="20sp"
-                android:paddingTop="40sp">
+                android:paddingTop="40sp"
+                android:paddingEnd="20sp">
                 <Button
                     android:id="@+id/btnMenu"
                     android:layout_width="wrap_content"
@@ -73,24 +73,40 @@
                     android:layout_gravity="center_horizontal"
                     android:text="Cambiar Foto" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:text="Biografía"
-                    android:textColor="@color/acent"
-                    android:textSize="16sp"/>
-                <EditText
-                    android:id="@+id/etBiografia"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="100dp"
-                    android:gravity="top"
-                    android:hint="Cuéntanos sobre ti..."
-                    android:background="@drawable/rounded_input"
-                    android:inputType="textMultiLine"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:text="Biografía"
+                        android:textColor="@color/acent"
+                        android:textSize="16sp"/>
+                    <ImageButton
+                        android:id="@+id/btnEditarBiografia"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="24dp"
+                        android:src="@android:drawable/ic_menu_edit"
+                        app:tint="@color/primary"
+                        android:background="?attr/selectableItemBackgroundBorderless"/>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvBiografia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:padding="8dp"
                     android:textColor="@color/text_primary"
-                    android:textColorHint="@color/text_secondary" />
+                    android:textSize="16sp"
+                    android:hint="Toca el lápiz para añadir una biografía..."
+                    tools:text="Aquí va la biografía del usuario..." />
+
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -105,51 +121,55 @@
                     android:layout_height="wrap_content"
                     android:padding="12dp"
                     android:textColor="@color/text_secondary"
-                    tools:text="Nombre: Camilo Suarez"/>
+                    tools:text="Nombre: Camilo Suarez" />
                 <TextView
                     android:id="@+id/tvPerfilEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="12dp"
                     android:textColor="@color/text_secondary"
-                    tools:text="Email: c.suarez@gmail.com"/>
+                    tools:text="Email: c.suarez@gmail.com" />
                 <TextView
                     android:id="@+id/tvPerfilHp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="12dp"
                     android:textColor="@color/text_secondary"
-                    tools:text="HP: 1000 / 1000"/>
+                    tools:text="HP: 1000 / 1000" />
 
+                <Button
+                    android:id="@+id/btnGuardarPerfil"
+                    android:layout_width="match_parent"
+                    android:layout_height="50sp"
+                    android:layout_marginTop="40dp"
+                    android:text="Guardar Cambios"
+                    android:backgroundTint="@color/achievement"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
                     android:orientation="horizontal"
-                    android:layout_gravity="center">
+                    android:layout_marginTop="16dp">
 
                     <Button
                         android:id="@+id/btnDescartarPerfil"
-                        android:layout_width="175sp"
+                        android:layout_width="0dp"
                         android:layout_height="50sp"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginRight="10sp"
-                        android:text="Descartar Cambios"
-                        android:backgroundTint="@color/warning"/>
-
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:backgroundTint="@color/surface"
+                        android:textColor="@color/text_primary"
+                        android:text="Descartar Cambios" />
 
                     <Button
-                        android:id="@+id/btnGuardarPerfil"
-                        android:layout_width="175sp"
+                        android:id="@+id/btnEliminarPerfil"
+                        android:layout_width="0dp"
                         android:layout_height="50sp"
-                        android:layout_gravity="center_horizontal"
-                        android:text="Guardar Cambios"
-                        android:backgroundTint="@color/success"/>
-
-
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:backgroundTint="@color/warning"
+                        android:text="Limpiar Perfil" />
                 </LinearLayout>
-
 
             </LinearLayout>
         </LinearLayout>
