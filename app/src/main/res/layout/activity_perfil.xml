@@ -86,6 +86,7 @@
                         android:text="Biografía"
                         android:textColor="@color/acent"
                         android:textSize="16sp"/>
+
                     <ImageButton
                         android:id="@+id/btnEditarBiografia"
                         android:layout_width="48dp"
@@ -93,7 +94,7 @@
                         android:layout_marginTop="24dp"
                         android:src="@android:drawable/ic_menu_edit"
                         app:tint="@color/primary"
-                        android:background="?attr/selectableItemBackgroundBorderless"/>
+                        android:background=""/>
                 </LinearLayout>
 
                 <TextView
@@ -137,40 +138,27 @@
                     android:textColor="@color/text_secondary"
                     tools:text="HP: 1000 / 1000" />
 
-                <Button
-                    android:id="@+id/btnGuardarPerfil"
-                    android:layout_width="match_parent"
-                    android:layout_height="50sp"
-                    android:layout_marginTop="40dp"
-                    android:text="Guardar Cambios"
-                    android:backgroundTint="@color/achievement"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="16dp">
+                    android:layout_marginTop="16dp"
+                    android:gravity="center_horizontal">
 
                     <Button
-                        android:id="@+id/btnDescartarPerfil"
-                        android:layout_width="0dp"
-                        android:layout_height="50sp"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="8dp"
-                        android:backgroundTint="@color/surface"
-                        android:textColor="@color/text_primary"
-                        android:text="Descartar Cambios" />
+                    android:id="@+id/btnEliminarPerfil"
+                    android:layout_width="wrap_content" android:layout_height="50sp"
+                    android:layout_marginEnd="16dp" android:backgroundTint="@color/warning"
+                    android:text="Limpiar Perfil" />
 
                     <Button
-                        android:id="@+id/btnEliminarPerfil"
-                        android:layout_width="0dp"
-                        android:layout_height="50sp"
-                        android:layout_weight="1"
-                        android:layout_marginStart="8dp"
-                        android:backgroundTint="@color/warning"
-                        android:text="Limpiar Perfil" />
+                        android:id="@+id/btnGuardarPerfil"
+                        android:layout_width="wrap_content" android:layout_height="50sp"
+                        android:text="Guardar Cambios"
+                        android:backgroundTint="@color/success"/>
+
                 </LinearLayout>
-
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
