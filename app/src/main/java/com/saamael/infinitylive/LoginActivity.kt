@@ -14,6 +14,8 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.firestore.FirebaseFirestore
 import com.saamael.infinitylive.databinding.ActivityLoginBinding
 
@@ -73,10 +75,14 @@ class LoginActivity : AppCompatActivity() {
     }
 
     // --- FUNCIÓN PARA INICIAR SESIÓN CON EMAIL/PASS ---
+// --- FUNCIÓN PARA INICIAR SESIÓN CON EMAIL/PASS (CORREGIDA Y SEGURA) ---
     private fun iniciarSesionEmailPassword() {
-        // Ahora podemos leer los IDs gracias al Paso 1
         val email = binding.etCorreo.text.toString().trim()
         val password = binding.etContrasena.text.toString().trim()
+
+        // Limpiar errores anteriores
+        binding.etCorreo.error = null
+        binding.etContrasena.error = null
 
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Ingresa email y contraseña", Toast.LENGTH_SHORT).show()
@@ -88,12 +94,43 @@ class LoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     val user = mAuth.currentUser
                     if (user != null) {
-                        checkUserExists(user) // Revisa si es usuario nuevo o antiguo
+                        if (user.isEmailVerified) {
+                            checkUserExists(user) // Usuario verificado, ¡adelante!
+                        } else {
+                            // Usuario no verificado
+                            Toast.makeText(this, "Por favor, verifica tu correo electrónico para continuar.", Toast.LENGTH_LONG).show()
+                            mAuth.signOut() // Desloguear
+                        }
                     }
                 } else {
-                    Toast.makeText(this, "Error: ${task.exception?.message}", Toast.LENGTH_LONG).show()
+                    // --- INICIO DE LA CORRECCIÓN DE SEGURIDAD ---
+                    // Mostramos un mensaje genérico para cualquier error de credencial
+                    try {
+                        throw task.exception!!
+                    }
+                    catch (e: FirebaseAuthInvalidUserException) {
+                        // Error: El correo no existe
+                        mostrarErrorGenerico()
+                    }
+                    catch (e: FirebaseAuthInvalidCredentialsException) {
+                        // Error: La contraseña es incorrecta
+                        mostrarErrorGenerico()
+                    }
+                    catch (e: Exception) {
+                        // Cualquier otro error
+                        Toast.makeText(baseContext, "Error inesperado al iniciar sesión.", Toast.LENGTH_LONG).show()
+                    }
                 }
             }
+    }
+
+    /**
+     * Muestra un error genérico para evitar la enumeración de usuarios.
+     */
+    private fun mostrarErrorGenerico() {
+        binding.etCorreo.error = "Usuario o contraseña incorrectos"
+        binding.etCorreo.requestFocus()
+        Toast.makeText(baseContext, "Usuario o contraseña incorrectos.", Toast.LENGTH_LONG).show()
     }
 
     // --- FUNCIONES PARA INICIAR SESIÓN CON GOOGLE ---
@@ -137,6 +174,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun goToInicioActivity() {
         val intent = Intent(this, InicioActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finishAffinity()
     }

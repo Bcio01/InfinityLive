@@ -92,11 +92,15 @@ class InicioActivity : BaseActivity(),
 
     // Pega esta nueva función en InicioActivity.kt
     private fun cargarFotoPerfilDashboard() {
+        if (uid == null) return // Si no hay usuario, no hay nada que buscar
+
         val dbHelper = PerfilDbHelper(this)
         val db = dbHelper.readableDatabase
+
+        // Buscamos la fila específica de este usuario
         val cursor: android.database.Cursor = db.rawQuery(
-            "SELECT * FROM ${PerfilContract.Entry.TABLE_NAME} WHERE ${PerfilContract.Entry.COLUMN_ID} = 1",
-            null
+            "SELECT * FROM ${PerfilContract.Entry.TABLE_NAME} WHERE ${PerfilContract.Entry.COLUMN_USER_UID} = ?",
+            arrayOf(uid) // <-- Argumento de selección
         )
 
         if (cursor.moveToFirst()) {
@@ -105,13 +109,15 @@ class InicioActivity : BaseActivity(),
                 com.bumptech.glide.Glide.with(this)
                     .load(java.io.File(pathFoto))
                     .circleCrop()
-                    .into(binding.imgAvatar) // <-- Actualiza el ícono del DASHBOARD
+                    .into(binding.imgAvatar)
             } else {
                 binding.imgAvatar.setImageResource(R.drawable.usericon)
             }
+        } else {
+            // Si no hay fila, foto por defecto
+            binding.imgAvatar.setImageResource(R.drawable.usericon)
         }
         cursor.close()
-
     }
     private fun setupAreaRecyclerView() {
         val query: Query = db.collection("users").document(uid!!).collection("areas")

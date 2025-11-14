@@ -4,13 +4,13 @@ import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase // <-- Asegúrate de tener esta importación
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
-import com.bumptech.glide.Glide // Librería para cargar imágenes fácilmente
+import com.bumptech.glide.Glide
 import com.saamael.infinitylive.db.PerfilContract
 import com.saamael.infinitylive.db.PerfilDbHelper
 import com.saamael.infinitylive.databinding.ActivityPerfilBinding
@@ -21,14 +21,18 @@ class PerfilActivity : BaseActivity() {
     private lateinit var binding: ActivityPerfilBinding
     private lateinit var dbHelper: PerfilDbHelper
     private var imagenUri: Uri? = null // Guardará la URI de la nueva imagen
-    private var imagenPath: String? = null // Guardará la RUTA (String)
+    private var imagenPath: String? = null // Guardará la RUTA (String) actual o nueva
 
-    // --- CRUD: READ ---
     // Lanzador para el resultado de "Elegir Foto"
     private val selectorDeImagen = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         if (uri != null) {
             imagenUri = uri
-            binding.imgPerfil.setImageURI(uri) // Muestra la previsualización
+            // Muestra la previsualización de la nueva imagen
+            Glide.with(this)
+                .load(uri)
+                .circleCrop()
+                .into(binding.imgPerfil)
+
             // Convertimos la URI (temporal) a una ruta de archivo (permanente)
             imagenPath = getPathFromUri(this, uri)
         }
@@ -44,9 +48,11 @@ class PerfilActivity : BaseActivity() {
         // Inicializa el Helper de SQLite
         dbHelper = PerfilDbHelper(this)
 
-        // Carga los datos
-        cargarDatosDeFirebase()
-        cargarDatosDeSQLite() // CRUD: READ
+        // Carga los datos (si el uid no es nulo)
+        if (uid != null) {
+            cargarDatosDeFirebase()
+            cargarDatosDeSQLite() // CRUD: READ
+        }
 
         // Configura los botones
         binding.btnCambiarFoto.setOnClickListener {
@@ -54,7 +60,7 @@ class PerfilActivity : BaseActivity() {
         }
 
         binding.btnGuardarPerfil.setOnClickListener {
-            guardarPerfilEnSQLite() // CRUD: UPDATE
+            guardarPerfilEnSQLite() // CRUD: UPDATE / CREATE
         }
     }
 
@@ -71,12 +77,15 @@ class PerfilActivity : BaseActivity() {
         }
     }
 
-    // --- CRUD: READ ---
+    // --- CRUD: READ (MODIFICADO) ---
     private fun cargarDatosDeSQLite() {
+        if (uid == null) return // No continuar si no hay uid
+
         val db = dbHelper.readableDatabase
         val cursor: Cursor = db.rawQuery(
-            "SELECT * FROM ${PerfilContract.Entry.TABLE_NAME} WHERE ${PerfilContract.Entry.COLUMN_ID} = 1",
-            null
+            // Busca la fila que coincida con el UID del usuario actual
+            "SELECT * FROM ${PerfilContract.Entry.TABLE_NAME} WHERE ${PerfilContract.Entry.COLUMN_USER_UID} = ?",
+            arrayOf(uid) // Argumento de selección
         )
 
         if (cursor.moveToFirst()) {
@@ -86,60 +95,73 @@ class PerfilActivity : BaseActivity() {
             binding.etBiografia.setText(biografia)
 
             if (!pathFoto.isNullOrEmpty()) {
-                // Carga la imagen desde el almacenamiento local usando Glide
+                imagenPath = pathFoto // Guarda la ruta actual por si el usuario no la cambia
                 Glide.with(this)
                     .load(File(pathFoto)) // Carga desde la ruta del archivo
-                    .circleCrop() // Opcional: la hace redonda
+                    .circleCrop()
                     .into(binding.imgPerfil)
             }
         }
         cursor.close()
+        // No cerramos la BD (db.close()) para que App Inspection funcione
     }
 
-    // --- CRUD: UPDATE ---
+    // --- CRUD: UPDATE / CREATE (MODIFICADO) ---
     private fun guardarPerfilEnSQLite() {
+        if (uid == null) return // No se puede guardar sin un usuario
+
         val db = dbHelper.writableDatabase
         val biografia = binding.etBiografia.text.toString()
 
-        // Usamos ContentValues, igual que en tu PDF [cite: 285]
+        // Usamos ContentValues, igual que en tu PDF
         val values = ContentValues().apply {
+            put(PerfilContract.Entry.COLUMN_USER_UID, uid) // <-- CLAVE: Usamos el UID
             put(PerfilContract.Entry.COLUMN_BIOGRAFIA, biografia)
-            // Solo actualiza la foto si el usuario seleccionó una nueva
+
+            // Si 'imagenPath' no es nulo, significa que (A) cargó la foto antigua o (B) seleccionó una nueva.
+            // En ambos casos, guardamos el valor que tenga.
             if (imagenPath != null) {
                 put(PerfilContract.Entry.COLUMN_IMAGE_PATH, imagenPath)
+            } else {
+                // Si el usuario no tenía foto y no eligió una, guardamos un string vacío
+                put(PerfilContract.Entry.COLUMN_IMAGE_PATH, "")
             }
         }
 
-        // Hacemos el UPDATE en la fila donde id = 1
-        val selection = "${PerfilContract.Entry.COLUMN_ID} = ?"
-        val selectionArgs = arrayOf("1")
-
-        val count = db.update(
+        // Lógica "UPSERT" (UPDATE o INSERT)
+        // Reemplazará la fila si 'user_uid' ya existe,
+        // o creará una fila nueva si no existe.
+        val newRowId = db.insertWithOnConflict(
             PerfilContract.Entry.TABLE_NAME,
+            null,
             values,
-            selection,
-            selectionArgs
+            SQLiteDatabase.CONFLICT_REPLACE // <-- Esto hace la magia
         )
 
-
-        if (count > 0) {
+        if (newRowId != -1L) {
             Toast.makeText(this, "Perfil actualizado con éxito", Toast.LENGTH_SHORT).show()
-            cargarDatosDelMenu()
+            cargarDatosDelMenu() // Actualiza la foto del menú lateral al instante
         } else {
             Toast.makeText(this, "Error al actualizar el perfil", Toast.LENGTH_SHORT).show()
         }
+        // No cerramos la BD (db.close())
     }
 
     // Función de utilidad para obtener una ruta de archivo real desde una URI
     private fun getPathFromUri(context: Context, uri: Uri): String? {
         var path: String? = null
         val projection = arrayOf(MediaStore.Images.Media.DATA)
-        val cursor = context.contentResolver.query(uri, projection, null, null, null)
-        cursor?.use {
-            if (it.moveToFirst()) {
-                val columnIndex = it.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-                path = it.getString(columnIndex)
+        var cursor: Cursor? = null
+        try {
+            cursor = context.contentResolver.query(uri, projection, null, null, null)
+            cursor?.use {
+                if (it.moveToFirst()) {
+                    val columnIndex = it.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+                    path = it.getString(columnIndex)
+                }
             }
+        } catch (e: Exception) {
+            Toast.makeText(context, "Error al leer la ruta de la imagen", Toast.LENGTH_SHORT).show()
         }
         return path
     }
