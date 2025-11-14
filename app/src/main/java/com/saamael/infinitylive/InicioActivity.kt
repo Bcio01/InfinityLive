@@ -95,7 +95,7 @@ class InicioActivity : BaseActivity(),
         val dbHelper = PerfilDbHelper(this)
         val db = dbHelper.readableDatabase
         val cursor: android.database.Cursor = db.rawQuery(
-            "SELECT * FROM ${PerfilContract.Entry.TABLE_NAME} WHERE ${PerfilContract.Entry.COLUMN_ID} = 1",
+            "SELECT * FROM ${PerfilContract.Entry.TABLE_NAME} WHERE ${PerfilContract.Entry.COLUMN_USER_UID} = 1",
             null
         )
 

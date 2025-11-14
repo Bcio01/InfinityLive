@@ -95,7 +95,7 @@
                         android:layout_marginTop="24dp"
                         android:src="@android:drawable/ic_menu_edit"
                         app:tint="@color/primary"
-                        android:background=""/>
+                        android:background="@color/background"/>
                 </LinearLayout>
 
                 <TextView
@@ -107,7 +107,7 @@
                     android:textColor="@color/text_primary"
                     android:textSize="16sp"
                     android:hint="Toca el lápiz para añadir una biografía..."
-                    tools:text="Aquí va la biografía del usuario..." />
+                    tools:text="" />
 
 
                 <TextView
