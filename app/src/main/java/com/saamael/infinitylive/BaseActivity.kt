@@ -78,16 +78,12 @@ open class BaseActivity : AppCompatActivity() {
             }
         }
 
-
-        if (uid == null) return // Si no hay usuario, no hay nada que buscar
-
+        // 2. Cargar Foto de SQLite (esto ya lo tenías)
         val dbHelper = PerfilDbHelper(this)
         val db = dbHelper.readableDatabase
-
-        // Buscamos la fila específica de este usuario
         val cursor: android.database.Cursor = db.rawQuery(
-            "SELECT * FROM ${PerfilContract.Entry.TABLE_NAME} WHERE ${PerfilContract.Entry.COLUMN_USER_UID} = ?",
-            arrayOf(uid) // <-- Argumento de selección
+            "SELECT * FROM ${PerfilContract.Entry.TABLE_NAME} WHERE ${PerfilContract.Entry.COLUMN_USER_UID} = 1",
+            null
         )
 
         if (cursor.moveToFirst()) {
@@ -96,13 +92,10 @@ open class BaseActivity : AppCompatActivity() {
                 com.bumptech.glide.Glide.with(this)
                     .load(java.io.File(pathFoto))
                     .circleCrop()
-                    .into(bindingMenu.imgUserIcon)
+                    .into(bindingMenu.imgUserIcon) // Actualiza el ícono del MENÚ
             } else {
                 bindingMenu.imgUserIcon.setImageResource(R.drawable.usericon)
             }
-        } else {
-            // Si no hay fila para este usuario, muestra la foto por defecto
-            bindingMenu.imgUserIcon.setImageResource(R.drawable.usericon)
         }
         cursor.close()
     }

@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
+// 1. Definimos constantes para la BD (Buena práctica)
 object PerfilContract {
     const val DATABASE_NAME = "infinity_live_local.db"
     // --- ¡CAMBIO IMPORTANTE! ---
@@ -17,11 +18,12 @@ object PerfilContract {
         // La clave primaria ahora es el UID de Firebase (TEXTO)
         const val COLUMN_USER_UID = "user_uid"
         // ---
-        const val COLUMN_IMAGE_PATH = "path_foto"
-        const val COLUMN_BIOGRAFIA = "biografia"
+        const val COLUMN_IMAGE_PATH = "path_foto" // Guardaremos la RUTA (TEXT)
+        const val COLUMN_BIOGRAFIA = "biografia" // Guardaremos la Bio (TEXT)
     }
 }
 
+// 2. Esta es la clase de tu PDF, pero en Kotlin
 class PerfilDbHelper(context: Context) : SQLiteOpenHelper(
     context,
     PerfilContract.DATABASE_NAME,
@@ -29,6 +31,7 @@ class PerfilDbHelper(context: Context) : SQLiteOpenHelper(
     PerfilContract.DATABASE_VERSION
 ) {
 
+    // 3. Se ejecuta para crear la tabla por primera vez
     override fun onCreate(db: SQLiteDatabase?) {
         // --- ¡CAMBIO IMPORTANTE! ---
         // La tabla ahora usa 'user_uid' como Clave Primaria
@@ -41,9 +44,10 @@ class PerfilDbHelper(context: Context) : SQLiteOpenHelper(
         """.trimIndent()
 
         db?.execSQL(createTableQuery)
-        // --- Ya no insertamos una fila por defecto ---
+        // Ya no insertamos una fila por defecto
     }
 
+    // 4. Se ejecuta si cambias DATABASE_VERSION
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         // Esto se ejecutará porque cambiamos de versión 1 a 2
         // Borra la tabla 'perfil' antigua (con id=1)
