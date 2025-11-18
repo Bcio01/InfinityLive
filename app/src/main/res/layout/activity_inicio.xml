@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="16dp"
-                android:text="Dashboard"
+                android:text="Panel"
                 android:textColor="@color/success"
                 android:textSize="20sp" />
         </LinearLayout>

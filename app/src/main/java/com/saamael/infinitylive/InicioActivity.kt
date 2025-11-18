@@ -1,40 +1,39 @@
 package com.saamael.infinitylive
 
+import android.app.ActivityManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog // Importa AlertDialog
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide // <-- Importante para la imagen
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.saamael.infinitylive.databinding.ActivityInicioBinding
-import android.app.ActivityManager
-import android.content.Context
-import com.saamael.infinitylive.db.PerfilContract
-import com.saamael.infinitylive.db.PerfilDbHelper
+import com.saamael.infinitylive.db.PerfilContract // <-- Importante para la BD
+import com.saamael.infinitylive.db.PerfilDbHelper // <-- Importante para la BD
+import java.io.File // <-- Importante para leer el archivo
 
-
-// 2. IMPLEMENTA LAS INTERFACES DE LOS ADAPTADORES
 class InicioActivity : BaseActivity(),
     HabitoPositivoAdapter.OnHabitoPositivoListener,
     HabitoNegativoAdapter.OnHabitoNegativoListener {
 
     private lateinit var binding: ActivityInicioBinding
 
-    // ... (variables de adaptadores y listener)
+    // Adaptadores
     private var areaAdapter: AreaAdapter? = null
     private var habitoPositivoAdapter: HabitoPositivoAdapter? = null
     private var habitoNegativoAdapter: HabitoNegativoAdapter? = null
     private var userListener: ListenerRegistration? = null
 
-    // Variable para guardar los datos del usuario (HP y Áreas)
+    // Variables de estado
     private var currentHp: Long = 1000L
-    private var currentMonedas: Long = 0L
-    private val areasUsuario = mutableMapOf<String, Area>() // <AreaID, Objeto Area>
-
+    private var currentMonedas: Long = 0L // Variable para guardar monedas
+    private val areasUsuario = mutableMapOf<String, Area>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,70 +48,85 @@ class InicioActivity : BaseActivity(),
             setupUserProfileListener()
             setupAreaRecyclerView()
             setupHabitosRecyclerView()
-            cargarFotoPerfilDashboard()
-            // --- AÑADE ESTE CLIC ---
+            cargarFotoPerfilDashboard() // <-- CARGAR FOTO AL INICIAR
+
+            // Clic en el nombre para ir al Perfil
             binding.tvNombreUsuario.setOnClickListener {
                 val intent = Intent(this, PerfilActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                 startActivity(intent)
             }
-        } else {
 
+        } else {
+            Toast.makeText(this, "Error: No se pudo encontrar al usuario", Toast.LENGTH_LONG).show()
+            mAuth.signOut()
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
         }
     }
+
     override fun onResume() {
         super.onResume()
-        // (BaseActivity.onResume se encargará del menú)
-        // Esto se encarga del avatar del dashboard:
+        // Recargar la foto cada vez que la pantalla se muestra (ej. al volver del Perfil)
         cargarFotoPerfilDashboard()
     }
 
-    // --- Configuración del Dashboard ---
-
-    private fun setupUserProfileListener() {
-        userListener = db.collection("users").document(uid!!)
-            .addSnapshotListener { snapshot, error ->
-                if (error != null) { /* ... (manejo de error) ... */ return@addSnapshotListener }
-
-                if (snapshot != null && snapshot.exists()) {
-                    val nombre = snapshot.getString("nombre")
-                    currentHp = snapshot.getLong("avatar_hp") ?: 1000L // Actualiza el HP
-                    currentMonedas = snapshot.getLong("monedas") ?: 0L
-
-                    binding.tvNombreUsuario.text = nombre
-                    binding.tvHp.text = "$currentHp / 1000"
-                    binding.tvMonedas.text = currentMonedas.toString()
-
-
-                    // Comprobar si el usuario está muerto al cargar
-                    checkAvatarStatus()
-                }
-            }
-    }
-
-    // Pega esta nueva función en InicioActivity.kt
+    // --- Lógica de SQLite para la Foto ---
     private fun cargarFotoPerfilDashboard() {
+        if (uid == null) return
+
         val dbHelper = PerfilDbHelper(this)
         val db = dbHelper.readableDatabase
-        val cursor: android.database.Cursor = db.rawQuery(
-            "SELECT * FROM ${PerfilContract.Entry.TABLE_NAME} WHERE ${PerfilContract.Entry.COLUMN_USER_UID} = 1",
-            null
+
+        // Buscamos la foto específica de ESTE usuario (usando su UID)
+        val cursor = db.rawQuery(
+            "SELECT * FROM ${PerfilContract.Entry.TABLE_NAME} WHERE ${PerfilContract.Entry.COLUMN_USER_UID} = ?",
+            arrayOf(uid)
         )
 
         if (cursor.moveToFirst()) {
             val pathFoto = cursor.getString(cursor.getColumnIndexOrThrow(PerfilContract.Entry.COLUMN_IMAGE_PATH))
             if (!pathFoto.isNullOrEmpty()) {
-                com.bumptech.glide.Glide.with(this)
-                    .load(java.io.File(pathFoto))
+                // Carga la imagen con Glide
+                Glide.with(this)
+                    .load(File(pathFoto))
                     .circleCrop()
-                    .into(binding.imgAvatar) // <-- Actualiza el ícono del DASHBOARD
+                    .into(binding.imgAvatar)
             } else {
                 binding.imgAvatar.setImageResource(R.drawable.usericon)
             }
+        } else {
+            // Si no hay registro, imagen por defecto
+            binding.imgAvatar.setImageResource(R.drawable.usericon)
         }
         cursor.close()
-
+        // No cerramos la BD para que App Inspection funcione
     }
+
+    // --- Configuración de Firebase ---
+
+    private fun setupUserProfileListener() {
+        userListener = db.collection("users").document(uid!!)
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) return@addSnapshotListener
+
+                if (snapshot != null && snapshot.exists()) {
+                    val nombre = snapshot.getString("nombre")
+                    currentHp = snapshot.getLong("avatar_hp") ?: 1000L
+                    currentMonedas = snapshot.getLong("monedas") ?: 0L // Guardamos las monedas
+
+                    binding.tvNombreUsuario.text = nombre
+                    binding.tvHp.text = "$currentHp / 1000"
+                    binding.tvMonedas.text = currentMonedas.toString()
+
+                    // Actualizamos el nombre en el menú lateral también (via BaseActivity)
+                    bindingMenu.tvUserName.text = nombre
+
+                    checkAvatarStatus()
+                }
+            }
+    }
+
     private fun setupAreaRecyclerView() {
         val query: Query = db.collection("users").document(uid!!).collection("areas")
             .orderBy("nombre_area")
@@ -121,7 +135,6 @@ class InicioActivity : BaseActivity(),
             .setQuery(query, Area::class.java)
             .build()
 
-        // Guardar las áreas para la lógica de XP
         query.addSnapshotListener { snapshots, _ ->
             areasUsuario.clear()
             snapshots?.forEach { document ->
@@ -133,7 +146,6 @@ class InicioActivity : BaseActivity(),
 
         areaAdapter = AreaAdapter(options)
         val areaLayoutManager = LinearLayoutManager(this)
-        binding.rvAreas.itemAnimator = null // Desactiva las animaciones problemáticas
         binding.rvAreas.layoutManager = areaLayoutManager
         binding.rvAreas.adapter = areaAdapter
         binding.rvAreas.itemAnimator = null
@@ -147,104 +159,69 @@ class InicioActivity : BaseActivity(),
             .setQuery(queryPos, Habito::class.java).build()
 
         habitoPositivoAdapter = HabitoPositivoAdapter(optionsPos)
-        // --- 3. ASIGNA EL LISTENER ---
-        habitoPositivoAdapter?.listener = this // "this" es InicioActivity
-        // ---
+        habitoPositivoAdapter?.listener = this
+
         val layoutManagerPos = LinearLayoutManager(this)
-        binding.rvAreas.itemAnimator = null // Desactiva las animaciones problemáticas
         binding.rvHabitosPositivos.layoutManager = layoutManagerPos
         binding.rvHabitosPositivos.adapter = habitoPositivoAdapter
         binding.rvHabitosPositivos.itemAnimator = null
+        binding.rvHabitosPositivos.isNestedScrollingEnabled = false // Previene conflictos de scroll
 
         // --- Negativos ---
-        val queryNeg: Query = db.collection("users").document(uid!!)
-            .collection("habitos")
+        val queryNeg: Query = db.collection("users").document(uid!!).collection("habitos")
             .whereEqualTo("es_positivo", false)
         val optionsNeg = FirestoreRecyclerOptions.Builder<Habito>()
             .setQuery(queryNeg, Habito::class.java).build()
 
         habitoNegativoAdapter = HabitoNegativoAdapter(optionsNeg)
-        // --- 3. ASIGNA EL LISTENER ---
-        habitoNegativoAdapter?.listener = this // "this" es InicioActivity
-        // ---
+        habitoNegativoAdapter?.listener = this
+
         val layoutManagerNeg = LinearLayoutManager(this)
-        binding.rvAreas.itemAnimator = null // Desactiva las animaciones problemáticas
         binding.rvHabitosNegativos.layoutManager = layoutManagerNeg
         binding.rvHabitosNegativos.adapter = habitoNegativoAdapter
         binding.rvHabitosNegativos.itemAnimator = null
-        
+        binding.rvHabitosNegativos.isNestedScrollingEnabled = false // Previene conflictos de scroll
     }
 
-    // --- 4. IMPLEMENTA LA LÓGICA DEL JUEGO ---
+    // --- Lógica del Juego ---
 
-    /**
-     * Se llama cuando el usuario presiona el botón '+' en un hábito positivo.
-     */
     override fun onHabitoCompletado(habito: Habito) {
         if (uid == null) return
-
         val userDocRef = db.collection("users").document(uid!!)
 
-        // Usamos FieldValue.increment() para sumar de forma segura
-        userDocRef.update(
-            "monedas", FieldValue.increment(habito.monedas_ganadas)
-        ).addOnFailureListener {
-            Toast.makeText(this, "Error al sumar monedas: ${it.message}", Toast.LENGTH_SHORT).show()
-        }
+        userDocRef.update("monedas", FieldValue.increment(habito.monedas_ganadas))
+            .addOnFailureListener {
+                Toast.makeText(this, "Error al actualizar monedas", Toast.LENGTH_SHORT).show()
+            }
 
-        // Ahora sumamos la XP al área correspondiente
         if (habito.area_id != null) {
             val areaDocRef = userDocRef.collection("areas").document(habito.area_id!!)
             areaDocRef.update("xp", FieldValue.increment(habito.xp_ganada))
-                .addOnSuccessListener {
-                    // Después de sumar XP, revisamos si el área subió de nivel
-                    checkLevelUp(habito.area_id!!)
-                }
+                .addOnSuccessListener { checkLevelUp(habito.area_id!!) }
         }
     }
 
-    /**
-     * Se llama cuando el usuario presiona el botón '-' en un hábito negativo.
-     */
     override fun onHabitoCometido(habito: Habito) {
         if (uid == null) return
-
-        // TODO: En la rama "funcionalidad/tienda", revisaremos si el usuario
-        // tiene un "pase" para este hábito antes de restar HP.
-
         val userDocRef = db.collection("users").document(uid!!)
 
-        // Usamos FieldValue.increment() con un número negativo para restar HP
-        userDocRef.update(
-            "avatar_hp", FieldValue.increment(-habito.hp_perdida)
-        ).addOnSuccessListener {
-            // La variable 'currentHp' se actualizará sola gracias al SnapshotListener,
-            // que llamará a checkAvatarStatus().
-        }.addOnFailureListener {
-            Toast.makeText(this, "Error al restar HP: ${it.message}", Toast.LENGTH_SHORT).show()
-        }
+        userDocRef.update("avatar_hp", FieldValue.increment(-habito.hp_perdida))
+            .addOnFailureListener {
+                Toast.makeText(this, "Error al actualizar HP", Toast.LENGTH_SHORT).show()
+            }
     }
 
-    /**
-     * Revisa si un área tiene suficiente XP para subir de nivel.
-     */
     private fun checkLevelUp(areaId: String) {
-        val area = areasUsuario[areaId] ?: return // Obtiene el área del mapa
+        val area = areasUsuario[areaId] ?: return
         val xpNecesaria = area.nivel * 100
 
         if (area.xp >= xpNecesaria) {
-            // ¡SUBIÓ DE NIVEL!
             val xpSobrante = area.xp - xpNecesaria
             val nuevoNivel = area.nivel + 1
 
-            // Actualizamos el área en Firestore
             db.collection("users").document(uid!!).collection("areas").document(areaId)
-                .update(
-                    "nivel", nuevoNivel,
-                    "xp", xpSobrante
-                )
+                .update("nivel", nuevoNivel, "xp", xpSobrante)
                 .addOnSuccessListener {
-                    // Muestra una alerta de felicitación
                     AlertDialog.Builder(this)
                         .setTitle("¡Nivel Subido!")
                         .setMessage("¡Felicidades! Tu área \"${area.nombre_area}\" ha subido a Nivel $nuevoNivel.")
@@ -254,37 +231,19 @@ class InicioActivity : BaseActivity(),
         }
     }
 
-    /**
-     * Revisa si el avatar "murió" (HP <= 0).
-     */
     private fun checkAvatarStatus() {
-        // Esta comprobación evita que la RevivirActivity se lance múltiples veces
-        // si el HP sigue en 0 mientras la actividad ya está abierta.
         if (currentHp <= 0 && !isActivityRunning(RevivirActivity::class.java)) {
-
-            // ¡EL AVATAR MURIÓ!
-            // Lanza la pantalla de bloqueo (RevivirActivity)
             val intent = Intent(this, RevivirActivity::class.java)
-            // Pasamos el total de monedas a la pantalla de muerte
+            // Pasamos las monedas para el castigo
             intent.putExtra("MONEDAS_ACTUALES", currentMonedas)
-
-            // Estos flags evitan que el usuario pueda volver a InicioActivity
-            // y borran el historial de navegación.
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
-
-            // Cierra la InicioActivity actual para que no se quede "debajo"
             finish()
         }
     }
 
-    /**
-     * Función de utilidad para comprobar si una actividad ya está en la pantalla.
-     */
     private fun isActivityRunning(activityClass: Class<*>): Boolean {
         val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        // Nota: getRunningTasks está obsoleto, pero es la forma más simple
-        // para este caso de uso específico.
         val tasks = activityManager.getRunningTasks(Integer.MAX_VALUE)
         for (task in tasks) {
             if (task.baseActivity?.className == activityClass.name) {
@@ -293,8 +252,6 @@ class InicioActivity : BaseActivity(),
         }
         return false
     }
-
-    // ... (highlightActiveMenuItem, onStart, onStop) ...
 
     private fun highlightActiveMenuItem() {
         bindingMenu.tvMenuInicio.setTextColor(ContextCompat.getColor(this, R.color.success))
