@@ -30,6 +30,9 @@
         <activity
             android:name=".GestionCastigosActivity"
             android:exported="false" />
+        <activity
+            android:name=".CrearProductoActivity"
+            android:exported="false" />
 
         <activity
             android:name=".RevivirActivity"

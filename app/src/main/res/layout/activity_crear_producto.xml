@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@color/background"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nueva Recompensa"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/acent"
+        android:layout_marginBottom="32dp"/>
+
+    <EditText
+        android:id="@+id/etNombreProducto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nombre (Ej: Salida al Cine)"
+        android:background="@drawable/rounded_input"
+        android:textColor="@color/text_primary"
+        android:textColorHint="@color/text_secondary"
+        android:layout_marginBottom="16dp"/>
+
+    <EditText
+        android:id="@+id/etDescProducto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Descripción (Opcional)"
+        android:background="@drawable/rounded_input"
+        android:textColor="@color/text_primary"
+        android:textColorHint="@color/text_secondary"
+        android:layout_marginBottom="16dp"/>
+
+    <EditText
+        android:id="@+id/etPrecioProducto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Precio en Monedas (Ej: 500)"
+        android:inputType="number"
+        android:background="@drawable/rounded_input"
+        android:textColor="@color/text_primary"
+        android:textColorHint="@color/text_secondary"
+        android:layout_marginBottom="32dp"/>
+
+    <Button
+        android:id="@+id/btnGuardarProducto"
+        android:layout_width="match_parent"
+        android:layout_height="60sp"
+        android:text="Crear Recompensa"
+        android:backgroundTint="@color/success"/>
+
+</LinearLayout>
