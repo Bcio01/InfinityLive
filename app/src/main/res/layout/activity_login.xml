@@ -56,22 +56,26 @@
             android:layout_width="200sp"
             android:layout_height="50sp"
             android:layout_marginTop="40dp"
-            android:backgroundTint="@color/achievement"
+            android:backgroundTint="@color/surface"
             android:text="Acceder"
-            android:textColor="@color/text_primary"
+            app:strokeColor="@color/divider"
+            app:strokeWidth="2dp"
+            android:textColor="@color/primary"
             android:textSize="20sp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnGoogleSignIn"
-            android:layout_width="200sp"
+            android:layout_width="wrap_content"
             android:layout_height="55sp"
             android:layout_marginTop="16dp"
-            android:backgroundTint="@color/surface"
+            android:backgroundTint="@color/divider"
+            app:strokeColor="@color/text_secondary"
+            app:strokeWidth="2dp"
             android:text="Continuar con Google"
             android:textColor="@color/text_primary"
             android:textSize="14sp"
 
-            app:icon="@drawable/ic_google_logo"
+            app:icon="@drawable/iconogoogle"
             app:iconGravity="textStart"
             app:iconPadding="10dp"
             app:iconSize="30dp"
@@ -97,7 +101,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12sp"
                 android:text=" Registrate!"
-                android:textColor="@color/primary"
+                android:textColor="@color/achievement"
                 android:textSize="16sp" />
 
         </LinearLayout>
