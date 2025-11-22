@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20sp"
             android:layout_marginBottom="20sp"
-            android:text="Define de 7 a 12 áreas de tu vida que deseas mejorar (Ej: Salud, Finanzas, Familia)."
+            android:text="@string/context_areas"
             android:textSize="16sp"
             android:textColor="@color/text_primary"
             android:gravity="center_horizontal"/>
@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16sp"
                 android:background="@drawable/rounded_input"
-                android:hint="Área 1 (Ej: Vida Espiritual)"
+                android:hint="@string/example_area_1"
                 android:inputType="textCapSentences"
                 android:textColor="@color/text_primary"
                 android:textColorHint="@color/text_secondary" />
@@ -58,7 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16sp"
-                android:hint="Área 2 (Ej: Familia)"
+                android:hint="@string/example_area_2"
                 android:inputType="textCapSentences"
                 android:background="@drawable/rounded_input"
                 android:textColor="@color/text_primary"
@@ -68,52 +68,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:hint="Área 3 (Ej: Salud)"
+                android:hint="@string/example_area_3"
                 android:inputType="textCapSentences"
                 android:background="@drawable/rounded_input"
                 android:textColor="@color/text_primary"
                 android:textColorHint="@color/text_secondary"/>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="Área 4 (Ej: Finanzas)"
-                android:inputType="textCapSentences"
-                android:background="@drawable/rounded_input"
-                android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_secondary"/>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="Área 5 (Ej: Relaciones)"
-                android:inputType="textCapSentences"
-                android:background="@drawable/rounded_input"
-                android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_secondary"/>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="Área 6 (Ej: Crecimiento Personal)"
-                android:inputType="textCapSentences"
-                android:background="@drawable/rounded_input"
-                android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_secondary"/>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="Área 7 (Ej: Trabajo)"
-                android:inputType="textCapSentences"
-                android:background="@drawable/rounded_input"
-                android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_secondary"/>
-
         </LinearLayout>
 
         <LinearLayout
@@ -147,7 +106,7 @@
             android:layout_height="50sp"
             android:layout_marginTop="40dp"
             android:layout_marginBottom="40dp"
-            android:text="Confirmar Áreas"
+            android:text="@string/btn_areas_text"
             android:textSize="20sp"
             android:backgroundTint="@color/achievement"
             android:textColor="@color/text_primary"/>

@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="16dp"
-                android:text="Panel"
+                android:text="@string/inicio_title"
                 android:textColor="@color/success"
                 android:textSize="20sp" />
         </LinearLayout>
@@ -85,19 +85,21 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:layout_marginTop="8dp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="❤️ HP: "
-                        android:textColor="@color/warning"
+                        android:text="@string/inicio_hp"
+                        android:textColor="@color/penalty"
                         android:textSize="16sp"/>
                     <TextView
                         android:id="@+id/tvHp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="8sp"
                         android:textColor="@color/text_primary"
                         android:textSize="16sp"
-                        tools:text="1000 / 1000" />
+                        tools:text="@string/inicio_hp_number"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -109,8 +111,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="💰 Monedas: "
-                        android:textColor="@color/success"
+                        android:text="@string/inicio_monedas"
+                        android:textColor="@color/warning"
                         android:textSize="16sp"/>
                     <TextView
                         android:id="@+id/tvMonedas"
@@ -118,7 +120,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/text_primary"
                         android:textSize="16sp"
-                        tools:text="0" />
+                        tools:text="@string/inicio_monedas_number" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -126,7 +128,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Progreso de Áreas"
+            android:text="@string/inicio_progress_areas"
             android:textColor="@color/acent"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -147,7 +149,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hábitos Positivos"
+            android:text="@string/inicio_habitos_p"
             android:textColor="@color/success"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -167,8 +169,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hábitos Negativos"
-            android:textColor="@color/warning"
+            android:text="@string/inicio_habitos_n"
+            android:textColor="@color/penalty"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginStart="20dp"

@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
     android:orientation="vertical"
+    android:background="@color/background"
     tools:context=".PerfilActivity">
 
     <ScrollView
@@ -41,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:padding="16dp"
-                    android:text="Mi Perfil"
+                    android:text="@string/perfil_title"
                     android:textColor="@color/success"
                     android:textSize="20sp" />
             </LinearLayout>
@@ -72,49 +72,34 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="Cambiar Foto" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:text="Biografía"
-                        android:textColor="@color/acent"
-                        android:textSize="16sp"/>
-
-                    <ImageButton
-                        android:id="@+id/btnEditarBiografia"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_marginTop="24dp"
-                        android:src="@android:drawable/ic_menu_edit"
-                        app:tint="@color/primary"
-                        android:background="@color/background"/>
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/tvBiografia"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:padding="8dp"
-                    android:textColor="@color/text_primary"
-                    android:textSize="16sp"
-                    android:hint="Toca el lápiz para añadir una biografía..."
-                    tools:text="" />
-
+                    android:text="@string/perfil_img" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:text="Estadísticas (Solo Lectura)"
+                    android:text="@string/perfil_biografia"
+                    android:textColor="@color/acent"
+                    android:textSize="16sp"/>
+                <EditText
+                    android:id="@+id/etBiografia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="100dp"
+                    android:gravity="top"
+                    android:hint="@string/perfil_biografia_hint"
+                    android:background="@drawable/rounded_input"
+                    android:inputType="textMultiLine"
+                    android:layout_marginTop="8dp"
+                    android:padding="8dp"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_secondary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/perfil_stats"
                     android:textColor="@color/acent"
                     android:textSize="16sp"/>
                 <TextView
@@ -123,21 +108,22 @@
                     android:layout_height="wrap_content"
                     android:padding="12dp"
                     android:textColor="@color/text_secondary"
-                    tools:text="Nombre: Camilo Suarez" />
+                    tools:text="@string/perfil_user"/>
                 <TextView
                     android:id="@+id/tvPerfilEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="12dp"
                     android:textColor="@color/text_secondary"
-                    tools:text="Email: c.suarez@gmail.com" />
+                    tools:text="@string/perfil_correo"/>
                 <TextView
                     android:id="@+id/tvPerfilHp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="12dp"
                     android:textColor="@color/text_secondary"
-                    tools:text="HP: 1000 / 1000" />
+                    tools:text="@string/perfil_hp"/>
+
 
 
                 <LinearLayout
@@ -155,10 +141,12 @@
 
                     <Button
                         android:id="@+id/btnGuardarPerfil"
-                        android:layout_width="wrap_content" android:layout_height="50sp"
-                        android:text="Guardar Cambios"
-                        android:backgroundTint="@color/success"/>
-
+                        android:layout_width="200sp"
+                        android:layout_height="50sp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="40dp"
+                        android:text="@string/perfil_btn"
+                        android:backgroundTint="@color/achievement"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
