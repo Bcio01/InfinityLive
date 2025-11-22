@@ -254,8 +254,8 @@ Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más det
 
 ## 👥 Autores
 
-- **Jeferson Valencia** - *frontend* - [SamaelBlossom](https://github.com/SamaelBlossom)
-- **Johan Suarez** - *backend* - [B Cio](https://github.com/Bcio01)
+- **Jeferson Valencia** - [SamaelBlossom](https://github.com/SamaelBlossom)
+- **Johan Suarez** - [B Cio](https://github.com/Bcio01)
 
 ---
 
