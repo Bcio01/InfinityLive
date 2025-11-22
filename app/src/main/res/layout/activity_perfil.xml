@@ -11,6 +11,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/background"
         android:fillViewport="true">
 
         <LinearLayout
@@ -24,8 +25,8 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingStart="20sp"
-                android:paddingEnd="20sp"
-                android:paddingTop="40sp">
+                android:paddingTop="40sp"
+                android:paddingEnd="20sp">
                 <Button
                     android:id="@+id/btnMenu"
                     android:layout_width="wrap_content"
@@ -89,6 +90,8 @@
                     android:hint="@string/perfil_biografia_hint"
                     android:background="@drawable/rounded_input"
                     android:inputType="textMultiLine"
+                    android:layout_marginTop="8dp"
+                    android:padding="8dp"
                     android:textColor="@color/text_primary"
                     android:textColorHint="@color/text_secondary" />
 
@@ -121,15 +124,30 @@
                     android:textColor="@color/text_secondary"
                     tools:text="@string/perfil_hp"/>
 
-                <Button
-                    android:id="@+id/btnGuardarPerfil"
-                    android:layout_width="200sp"
-                    android:layout_height="50sp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="40dp"
-                    android:text="@string/perfil_btn"
-                    android:backgroundTint="@color/achievement"/>
 
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center_horizontal">
+
+                    <Button
+                    android:id="@+id/btnEliminarPerfil"
+                    android:layout_width="wrap_content" android:layout_height="50sp"
+                    android:layout_marginEnd="16dp" android:backgroundTint="@color/warning"
+                    android:text="Limpiar Perfil" />
+
+                    <Button
+                        android:id="@+id/btnGuardarPerfil"
+                        android:layout_width="200sp"
+                        android:layout_height="50sp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="40dp"
+                        android:text="@string/perfil_btn"
+                        android:backgroundTint="@color/achievement"/>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

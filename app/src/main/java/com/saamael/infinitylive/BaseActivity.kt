@@ -52,52 +52,60 @@ open class BaseActivity : AppCompatActivity() {
         cargarDatosDelMenu()
     }
 
+// En BaseActivity.kt
+
+    // 1. Añade el onResume para que se actualice al volver de otra pantalla
     override fun onResume() {
         super.onResume()
-        // Vuelve a cargar la foto del menú CADA VEZ que la actividad se muestre
         cargarDatosDelMenu()
     }
 
-    // Pega esta nueva función en BaseActivity.kt
-    // (Reemplaza la antigua 'cargarFotoPerfilMenu')
+    // 2. Asegúrate de tener esta función completa
     protected fun cargarDatosDelMenu() {
-        // 1. Cargar Nombre de Firebase Auth (es lo más rápido)
+        // A) Cargar Nombre (Firebase)
         val currentUser = mAuth.currentUser
-        if (currentUser != null && currentUser.displayName != null && currentUser.displayName!!.isNotEmpty()) {
+        if (currentUser != null && !currentUser.displayName.isNullOrEmpty()) {
             bindingMenu.tvUserName.text = currentUser.displayName
         } else {
-            // Si Auth no tiene el nombre, búscalo en Firestore (plan B)
+            // Intento de fallback a Firestore si el nombre de Auth es nulo
             if (uid != null) {
                 db.collection("users").document(uid!!).get().addOnSuccessListener { snapshot ->
                     if (snapshot != null && snapshot.exists()) {
-                        bindingMenu.tvUserName.text = snapshot.getString("nombre")
+                        val nombreFirestore = snapshot.getString("nombre")
+                        if (!nombreFirestore.isNullOrEmpty()) {
+                            bindingMenu.tvUserName.text = nombreFirestore
+                        }
                     }
                 }
-            } else {
-                bindingMenu.tvUserName.text = "Usuario" // Fallback
             }
         }
 
-        // 2. Cargar Foto de SQLite (esto ya lo tenías)
-        val dbHelper = PerfilDbHelper(this)
+        // B) Cargar Foto (SQLite)
+        val dbHelper = com.saamael.infinitylive.db.PerfilDbHelper(this)
         val db = dbHelper.readableDatabase
-        val cursor: android.database.Cursor = db.rawQuery(
-            "SELECT * FROM ${PerfilContract.Entry.TABLE_NAME} WHERE ${PerfilContract.Entry.COLUMN_ID} = 1",
-            null
-        )
+        // Usamos try-catch para evitar crashes si la tabla no existe aún
+        try {
+            val cursor = db.rawQuery(
+                "SELECT * FROM ${com.saamael.infinitylive.db.PerfilContract.Entry.TABLE_NAME} WHERE ${com.saamael.infinitylive.db.PerfilContract.Entry.COLUMN_USER_UID} = ?",
+                arrayOf(uid)
+            )
 
-        if (cursor.moveToFirst()) {
-            val pathFoto = cursor.getString(cursor.getColumnIndexOrThrow(PerfilContract.Entry.COLUMN_IMAGE_PATH))
-            if (!pathFoto.isNullOrEmpty()) {
-                com.bumptech.glide.Glide.with(this)
-                    .load(java.io.File(pathFoto))
-                    .circleCrop()
-                    .into(bindingMenu.imgUserIcon) // Actualiza el ícono del MENÚ
-            } else {
-                bindingMenu.imgUserIcon.setImageResource(R.drawable.usericon)
+            if (cursor.moveToFirst()) {
+                val pathFoto = cursor.getString(cursor.getColumnIndexOrThrow(com.saamael.infinitylive.db.PerfilContract.Entry.COLUMN_IMAGE_PATH))
+                if (!pathFoto.isNullOrEmpty()) {
+                    com.bumptech.glide.Glide.with(this)
+                        .load(java.io.File(pathFoto))
+                        .circleCrop()
+                        .into(bindingMenu.imgUserIcon)
+                } else {
+                    bindingMenu.imgUserIcon.setImageResource(R.drawable.usericon)
+                }
             }
+            cursor.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-        cursor.close()
+        // No cerramos la BD para permitir que App Inspection funcione
     }
 
     private fun setupDrawerNavigation() {

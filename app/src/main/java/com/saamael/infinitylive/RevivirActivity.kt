@@ -70,36 +70,33 @@ class RevivirActivity : AppCompatActivity() {
             }
     }
 
+// En RevivirActivity.kt
+
     private fun revivirAvatar() {
+        // Bloquear el botón para evitar doble clic
         binding.btnHeCompletado.isEnabled = false
         binding.btnHeCompletado.text = "Reviviendo..."
 
-        // 1. Obtiene las monedas actuales que pasamos desde InicioActivity
+        // 1. Calcular la penalización
         val monedasActuales = intent.getLongExtra("MONEDAS_ACTUALES", 0L)
-
-        // 2. Calcula la penalización (ej. 10%)
         val penalizacion = (monedasActuales * 0.10).toLong()
         val nuevasMonedas = monedasActuales - penalizacion
 
-        // 3. Actualiza el HP y las Monedas en una sola operación
+        // 2. Lanzamos la actualización a Firebase (NO esperamos respuesta)
         db.collection("users").document(uid!!)
             .update(
                 "avatar_hp", 1000L,
                 "monedas", nuevasMonedas
             )
-            .addOnSuccessListener {
-                Toast.makeText(this, "¡Has revivido! (Perdiste $penalizacion monedas)", Toast.LENGTH_LONG).show()
+        // Ya no hay addOnSuccessListener ni addOnFailureListener aquí
 
-                // Vuelve al Inicio
-                val intent = Intent(this, InicioActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(intent)
-                finish()
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Error al revivir: ${e.message}", Toast.LENGTH_LONG).show()
-                binding.btnHeCompletado.isEnabled = true
-                binding.btnHeCompletado.text = "He completado el reto"
-            }
+        // 3. ¡AVANZAMOS INMEDIATAMENTE!
+        Toast.makeText(this, "¡Has revivido! (Perdiste $penalizacion monedas)", Toast.LENGTH_LONG).show()
+
+        val intent = Intent(this, InicioActivity::class.java)
+        // Estos flags aseguran que la pantalla de inicio sea la única que quede
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish() // Cierra la RevivirActivity
     }
 }
