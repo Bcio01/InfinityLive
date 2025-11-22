@@ -54,17 +54,19 @@ dependencies {
 
 // --- DEPENDENCIAS DE FIREBASE ACTUALIZADAS ---
 
-    // Importa el BOM (Bill of Materials) - ACTUALIZADO
+    // Importa el BOM (Bill of Materials)
     implementation(platform("com.google.firebase:firebase-bom:34.5.0"))
 
-    // Auth - Ya no se usa el sufijo '-ktx'
+    // Auth
     implementation("com.google.firebase:firebase-auth")
 
-    // Firestore - Ya no se usa el sufijo '-ktx'
+    // Firestore
     implementation("com.google.firebase:firebase-firestore")
 
-    // Google Sign-In - ACTUALIZADO
-    implementation("com.google.android.gms:play-services-auth:21.4.0")
+    // Google Sign-In
+    implementation("com.google.android.gms:play-services-auth:21.0.0")
+    // Asegúrate de tener también la de Firebase Auth
+    implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
 
     implementation("com.firebaseui:firebase-ui-firestore:8.0.2")
 

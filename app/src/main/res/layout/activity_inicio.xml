@@ -89,7 +89,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="❤️ HP: "
-                        android:textColor="@color/warning"
+                        android:textColor="@color/penalty"
                         android:textSize="16sp"/>
                     <TextView
                         android:id="@+id/tvHp"
@@ -110,7 +110,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="💰 Monedas: "
-                        android:textColor="@color/success"
+                        android:textColor="@color/primary"
                         android:textSize="16sp"/>
                     <TextView
                         android:id="@+id/tvMonedas"
@@ -127,7 +127,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Progreso de Áreas"
-            android:textColor="@color/acent"
+            android:textColor="@color/text_secondary"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginStart="20dp"

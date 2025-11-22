@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "565452676277-i613pce5stqan5n536otr6nbiuilicn6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.saamael.infinitylive",
+            "certificate_hash": "adaaf5e8ac2261856de0b00ea2c87c64713980ec"
+          }
+        },
+        {
           "client_id": "565452676277-lov9g5cbmdu3vh8hj8b48bsvqb6r7tl5.apps.googleusercontent.com",
           "client_type": 3
         }

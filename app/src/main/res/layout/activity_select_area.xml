@@ -16,141 +16,155 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40sp"
+            android:layout_marginTop="32dp"
             android:text="Tus Áreas Clave"
             android:textColor="@color/acent"
-            android:textSize="34sp"
+            android:textSize="32sp"
+            android:fontFamily="sans-serif-black"
             android:textStyle="bold" />
 
         <View
-            android:id="@+id/divider"
-            android:layout_width="150sp"
-            android:layout_height="5sp"
-            android:background="@color/divider"/>
+            android:layout_width="200dp"
+            android:layout_height="4dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/divider"
+            android:backgroundTint="@color/divider"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20sp"
-            android:layout_marginBottom="20sp"
-            android:text="Define de 7 a 12 áreas de tu vida que deseas mejorar (Ej: Salud, Finanzas, Familia)."
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:text="Selecciona las áreas que deseas mejorar (mínimo 3)."
             android:textSize="16sp"
-            android:textColor="@color/text_primary"
+            android:textColor="@color/text_secondary"
+            android:textAlignment="center"
             android:gravity="center_horizontal"/>
 
-        <LinearLayout
-            android:id="@+id/layoutAreasDinamicas"
+        <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:columnCount="2"
+            android:rowCount="3"
+            android:alignmentMode="alignMargins"
+            android:columnOrderPreserved="false"
+            android:useDefaultMargins="true">
 
-            <EditText
-                android:layout_width="match_parent"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnArea1"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16sp"
-                android:background="@drawable/rounded_input"
-                android:hint="Área 1 (Ej: Vida Espiritual)"
-                android:inputType="textCapSentences"
-                android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_secondary" />
+                android:layout_columnWeight="1"
+                android:layout_margin="6dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:text="Estudio"
+                android:checkable="true"
+                app:cornerRadius="12dp"
+                app:strokeColor="@color/selector_boton_borde"
+                app:backgroundTint="@color/surface"
+                android:textColor="@color/selector_boton_texto"/>
 
-            <EditText
-                android:layout_width="match_parent"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnArea2"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16sp"
-                android:hint="Área 2 (Ej: Familia)"
-                android:inputType="textCapSentences"
-                android:background="@drawable/rounded_input"
-                android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_secondary"/>
+                android:layout_columnWeight="1"
+                android:layout_margin="6dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:text="Familia"
+                android:checkable="true"
+                app:cornerRadius="12dp"
+                app:strokeColor="@color/selector_boton_borde"
+                app:backgroundTint="@color/surface"
+                android:textColor="@color/selector_boton_texto"/>
 
-            <EditText
-                android:layout_width="match_parent"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnArea3"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="Área 3 (Ej: Salud)"
-                android:inputType="textCapSentences"
-                android:background="@drawable/rounded_input"
-                android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_secondary"/>
+                android:layout_columnWeight="1"
+                android:layout_margin="6dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:text="Salud"
+                android:checkable="true"
+                app:cornerRadius="12dp"
+                app:strokeColor="@color/selector_boton_borde"
+                app:backgroundTint="@color/surface"
+                android:textColor="@color/selector_boton_texto"/>
 
-            <EditText
-                android:layout_width="match_parent"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnArea4"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="Área 4 (Ej: Finanzas)"
-                android:inputType="textCapSentences"
-                android:background="@drawable/rounded_input"
-                android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_secondary"/>
+                android:layout_columnWeight="1"
+                android:layout_margin="6dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:text="Finanzas"
+                android:checkable="true"
+                app:cornerRadius="12dp"
+                app:strokeColor="@color/selector_boton_borde"
+                app:backgroundTint="@color/surface"
+                android:textColor="@color/selector_boton_texto"/>
 
-            <EditText
-                android:layout_width="match_parent"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnArea5"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="Área 5 (Ej: Relaciones)"
-                android:inputType="textCapSentences"
-                android:background="@drawable/rounded_input"
-                android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_secondary"/>
+                android:layout_columnWeight="1"
+                android:layout_margin="6dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:text="Relaciones"
+                android:checkable="true"
+                app:cornerRadius="12dp"
+                app:strokeColor="@color/selector_boton_borde"
+                app:backgroundTint="@color/surface"
+                android:textColor="@color/selector_boton_texto"/>
 
-            <EditText
-                android:layout_width="match_parent"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnArea6"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="Área 6 (Ej: Crecimiento Personal)"
-                android:inputType="textCapSentences"
-                android:background="@drawable/rounded_input"
-                android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_secondary"/>
+                android:layout_columnWeight="1"
+                android:layout_margin="6dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:text="Trabajo"
+                android:checkable="true"
+                app:cornerRadius="12dp"
+                app:strokeColor="@color/selector_boton_borde"
+                app:backgroundTint="@color/surface"
+                android:textColor="@color/selector_boton_texto"/>
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="Área 7 (Ej: Trabajo)"
-                android:inputType="textCapSentences"
-                android:background="@drawable/rounded_input"
-                android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_secondary"/>
+        </GridLayout>
 
-        </LinearLayout>
-
-        <LinearLayout
+        <Space
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginTop="20dp">
-
-            <Button
-                android:id="@+id/btnQuitarArea"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:text="-"
-                android:textSize="24sp"
-                android:backgroundTint="@color/warning"
-                android:layout_marginEnd="20dp"/>
-
-            <Button
-                android:id="@+id/btnAnadirArea"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:text="+"
-                android:textSize="24sp"
-                android:backgroundTint="@color/success"/>
-        </LinearLayout>
+            android:layout_height="40dp"/>
 
         <Button
             android:id="@+id/btnConfirmarAreas"
-            android:layout_width="200sp"
-            android:layout_height="50sp"
-            android:layout_marginTop="40dp"
-            android:layout_marginBottom="40dp"
-            android:text="Confirmar Áreas"
-            android:textSize="20sp"
-            android:backgroundTint="@color/achievement"
-            android:textColor="@color/text_primary"/>
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:text="Continuar"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginHorizontal="20dp"
+            app:cornerRadius="30dp"
+            app:strokeColor="@color/text_secondary"
+            app:strokeWidth="2dp"
+            android:backgroundTint="@color/divider"
+            android:textColor="@color/success"/>
 
     </LinearLayout>
 </ScrollView>

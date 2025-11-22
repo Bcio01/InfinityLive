@@ -20,7 +20,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/text_primary"
+            android:textColor="@color/text_secondary"
             android:textSize="16sp"
             tools:text="Vida Espiritual" />
 
@@ -42,6 +42,6 @@
         android:layout_marginTop="8dp"
         android:max="100"
         android:progress="30"
-        android:progressTint="@color/acent" />
+        android:progressTint="@color/achievement" />
 
 </LinearLayout>
