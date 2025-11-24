@@ -10,6 +10,19 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.saamael.infinitylive.databinding.ActivityRevivirBinding
 
 class RevivirActivity : AppCompatActivity() {
+    companion object {
+        var isRunning: Boolean = false
+    }
+
+    override fun onStart() {
+        super.onStart()
+        isRunning = true // Marcamos que está activa
+    }
+
+    override fun onStop() {
+        super.onStop()
+        isRunning = false // Marcamos que ya no está activa
+    }
 
     private lateinit var binding: ActivityRevivirBinding
     private lateinit var mAuth: FirebaseAuth
