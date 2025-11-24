@@ -18,7 +18,7 @@ class TiendaAdapter(
         fun bind(item: ShopItem) {
             binding.tvItemNombre.text = item.nombre
             binding.tvItemDescripcion.text = item.descripcion
-            binding.tvItemPrecio.text = "${item.precio} Monedas"
+            binding.btnItemPrecio.text = "\uD83D\uDCB0 ${item.precio}"
 
             // Lógica simple para iconos
             if (item.iconName == "custom") {
@@ -27,7 +27,7 @@ class TiendaAdapter(
                 binding.ivItemIcon.setImageResource(R.drawable.storeicon) // Icono por defecto
             }
 
-            binding.btnComprar.setOnClickListener {
+            binding.btnItemPrecio.setOnClickListener {
                 onComprarClick(item)
             }
         }

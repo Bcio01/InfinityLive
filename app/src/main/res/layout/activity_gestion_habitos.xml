@@ -22,37 +22,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingTop="40sp"
-                android:paddingStart="20sp"
-                android:paddingEnd="20sp"
                 android:gravity="center_vertical">
-
-                <Button
-                    android:id="@+id/btnMenu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minWidth="48dp"
-                    android:backgroundTint="@color/surface"
-                    android:text="☰"
-                    android:textColor="@color/primary"
-                    android:textSize="24sp" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:padding="16dp"
-                    android:text="Gestión de Hábitos"
+                    android:paddingTop="16dp"
+                    android:paddingStart="20dp"
+                    android:text="Tienda de Pases"
                     android:textColor="@color/success"
-                    android:textSize="20sp" />
+                    android:textSize="25sp"
+                    android:textStyle="bold"/>
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="5dp"
                 android:background="@color/divider"
-                android:layout_marginStart="90sp"
-                android:layout_marginEnd="20sp"/>
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -153,4 +143,15 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+    <include
+        android:id="@+id/MenuInferior"
+        layout="@layout/bottom_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="50dp"/>
+
 </LinearLayout>

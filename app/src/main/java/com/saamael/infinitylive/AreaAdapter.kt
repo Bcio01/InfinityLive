@@ -19,16 +19,18 @@ class AreaAdapter(options: FirestoreRecyclerOptions<Area>) :
         // 3. Función para "rellenar" cada fila con datos
         fun bind(area: Area) {
             binding.tvAreaNombre.text = area.nombre_area
-            binding.tvAreaNivel.text = "Nivel ${area.nivel}"
+            // Solo mostramos el número del nivel porque el texto "Nivel" ya está fijo en el XML
+            binding.tvAreaNivel.text = area.nivel.toString()
 
             // Lógica para la barra de progreso de XP
             // Asumimos que la XP necesaria es Nivel * 100
             val xpNecesaria = area.nivel * 100
             if (xpNecesaria > 0) {
                 // Convertimos a porcentaje
-                val progreso = (area.xp.toDouble() / xpNecesaria.toDouble() * 100).toInt()
+                val xpNecesaria = area.nivel * 100
+                val porcentaje = if (xpNecesaria > 0) (area.xp.toInt() * 100) / xpNecesaria.toInt() else 0
                 binding.pbAreaXp.max = 100
-                binding.pbAreaXp.progress = progreso
+                binding.pbAreaXp.progress = porcentaje
             } else {
                 // Por si acaso, para evitar división por cero
                 binding.pbAreaXp.max = 100
