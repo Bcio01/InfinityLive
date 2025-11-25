@@ -22,7 +22,7 @@
         <FrameLayout
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@drawable/rounded_input"
+            android:background="@drawable/rounded_item_area"
             android:layout_gravity="center"
             android:backgroundTint="@color/background">
 
@@ -67,7 +67,7 @@
             android:layout_marginTop="8dp"
             android:max="100"
             android:progress="30"
-            android:progressTint="@color/achievement" />
+            android:progressTint="@color/success" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

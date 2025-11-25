@@ -2,25 +2,21 @@ package com.saamael.infinitylive
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.saamael.infinitylive.databinding.ActivityBaseBinding // Se genera de activity_base.xml
-import com.saamael.infinitylive.databinding.LayoutSideMenuBinding // Se genera de layout_side_menu.xml
+import com.saamael.infinitylive.databinding.ActivityBaseBinding
+import com.saamael.infinitylive.databinding.LayoutSideMenuBinding
 import com.saamael.infinitylive.db.PerfilContract
 import com.saamael.infinitylive.db.PerfilDbHelper
+import java.io.File
 
-// "open" significa que otras clases pueden heredar de esta
 open class BaseActivity : AppCompatActivity() {
 
     // Hacemos 'baseBinding' PROTECTED para que las clases hijas puedan acceder al content_frame
@@ -52,22 +48,17 @@ open class BaseActivity : AppCompatActivity() {
         cargarDatosDelMenu()
     }
 
-// En BaseActivity.kt
-
-    // 1. Añade el onResume para que se actualice al volver de otra pantalla
     override fun onResume() {
         super.onResume()
         cargarDatosDelMenu()
     }
 
-    // 2. Asegúrate de tener esta función completa
     protected fun cargarDatosDelMenu() {
         // A) Cargar Nombre (Firebase)
         val currentUser = mAuth.currentUser
         if (currentUser != null && !currentUser.displayName.isNullOrEmpty()) {
             bindingMenu.tvUserName.text = currentUser.displayName
         } else {
-            // Intento de fallback a Firestore si el nombre de Auth es nulo
             if (uid != null) {
                 db.collection("users").document(uid!!).get().addOnSuccessListener { snapshot ->
                     if (snapshot != null && snapshot.exists()) {
@@ -81,20 +72,19 @@ open class BaseActivity : AppCompatActivity() {
         }
 
         // B) Cargar Foto (SQLite)
-        val dbHelper = com.saamael.infinitylive.db.PerfilDbHelper(this)
-        val db = dbHelper.readableDatabase
-        // Usamos try-catch para evitar crashes si la tabla no existe aún
+        val dbHelper = PerfilDbHelper(this)
+        val dbSql = dbHelper.readableDatabase
         try {
-            val cursor = db.rawQuery(
-                "SELECT * FROM ${com.saamael.infinitylive.db.PerfilContract.Entry.TABLE_NAME} WHERE ${com.saamael.infinitylive.db.PerfilContract.Entry.COLUMN_USER_UID} = ?",
+            val cursor = dbSql.rawQuery(
+                "SELECT * FROM ${PerfilContract.Entry.TABLE_NAME} WHERE ${PerfilContract.Entry.COLUMN_USER_UID} = ?",
                 arrayOf(uid)
             )
 
             if (cursor.moveToFirst()) {
-                val pathFoto = cursor.getString(cursor.getColumnIndexOrThrow(com.saamael.infinitylive.db.PerfilContract.Entry.COLUMN_IMAGE_PATH))
+                val pathFoto = cursor.getString(cursor.getColumnIndexOrThrow(PerfilContract.Entry.COLUMN_IMAGE_PATH))
                 if (!pathFoto.isNullOrEmpty()) {
-                    com.bumptech.glide.Glide.with(this)
-                        .load(java.io.File(pathFoto))
+                    Glide.with(this)
+                        .load(File(pathFoto))
                         .circleCrop()
                         .into(bindingMenu.imgUserIcon)
                 } else {
@@ -105,11 +95,10 @@ open class BaseActivity : AppCompatActivity() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        // No cerramos la BD para permitir que App Inspection funcione
     }
 
     private fun setupDrawerNavigation() {
-        // --- Clics de navegación estáticos ---
+        // --- Clics de navegación ---
 
         bindingMenu.userMenu.setOnClickListener {
             val intent = Intent(this, PerfilActivity::class.java)
@@ -118,26 +107,17 @@ open class BaseActivity : AppCompatActivity() {
             baseBinding.drawerLayout.closeDrawer(GravityCompat.START)
         }
 
-
         bindingMenu.inicioMenu.setOnClickListener {
             val intent = Intent(this, InicioActivity::class.java)
-            // --- AÑADE ESTA LÍNEA ---
-            // Esto evita crear una actividad nueva si ya existe
             intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-            // ---
             startActivity(intent)
             baseBinding.drawerLayout.closeDrawer(GravityCompat.START)
         }
 
-
         bindingMenu.tiendaMenu.setOnClickListener {
-            // TODO: Crear TiendaActivity
             val intent = Intent(this, TiendaActivity::class.java)
-            // --- AÑADE ESTA LÍNEA ---
             intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-            // ---
             startActivity(intent)
-            // Toast.makeText(this, "Tienda (próximamente)", Toast.LENGTH_SHORT).show()
             baseBinding.drawerLayout.closeDrawer(GravityCompat.START)
         }
 
@@ -150,24 +130,24 @@ open class BaseActivity : AppCompatActivity() {
             }
         }
 
-        // Clic en la opción "Añadir Hábito"
-                bindingMenu.tvMenuAnadirHabito.setOnClickListener {
-                    val intent = Intent(this, GestionHabitosActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                    startActivity(intent)
-                    baseBinding.drawerLayout.closeDrawer(GravityCompat.START)
-                }
+        // Clic en "Añadir Hábito"
+        bindingMenu.tvMenuAnadirHabito.setOnClickListener {
+            val intent = Intent(this, GestionHabitosActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+            startActivity(intent)
+            baseBinding.drawerLayout.closeDrawer(GravityCompat.START)
+        }
 
-        // Clic en la opción "Gestionar Castigos"
-                bindingMenu.tvMenuGestionarCastigos.setOnClickListener {
-                    // TODO: Crearemos esta actividad en la rama "funcionalidad/muerte-y-castigos"
+        // Clic en "Gestionar Castigos"
+        bindingMenu.tvMenuGestionarCastigos.setOnClickListener {
+            // TODO: Cuando crees la clase GestionCastigosActivity, descomenta y usa esto
+            // val intent = Intent(this, GestionCastigosActivity::class.java)
+            // intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+            // startActivity(intent)
 
-                    // Por ahora, creamos el intent y la actividad vacía para que no crashee
-                    val intent = Intent(this, GestionCastigosActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                    startActivity(intent)
-                    baseBinding.drawerLayout.closeDrawer(GravityCompat.START)
-                }
+            Toast.makeText(this, "Próximamente", Toast.LENGTH_SHORT).show()
+            baseBinding.drawerLayout.closeDrawer(GravityCompat.START)
+        }
 
         bindingMenu.logoutMenu.setOnClickListener {
             mAuth.signOut()
@@ -178,7 +158,6 @@ open class BaseActivity : AppCompatActivity() {
         }
 
         bindingMenu.areasMenu.setOnClickListener {
-            // Expandir/colapsar el submenú
             if (bindingMenu.subMenuAreas.visibility == View.GONE) {
                 bindingMenu.subMenuAreas.visibility = View.VISIBLE
             } else {
@@ -189,15 +168,14 @@ open class BaseActivity : AppCompatActivity() {
         populateAreasSubMenu()
     }
 
-
     private fun populateAreasSubMenu() {
-        if (uid == null) return // No hay usuario, no cargar nada
+        if (uid == null) return
 
         db.collection("users").document(uid!!)
             .collection("areas")
             .get()
             .addOnSuccessListener { snapshot ->
-                bindingMenu.subMenuAreas.removeAllViews() // Limpiar menú anterior
+                bindingMenu.subMenuAreas.removeAllViews()
 
                 for (document in snapshot.documents) {
                     val area = document.toObject(Area::class.java)
@@ -209,7 +187,6 @@ open class BaseActivity : AppCompatActivity() {
                         textView.textSize = 14f
 
                         textView.setOnClickListener {
-                            // TODO: Crear AreaDetailActivity
                             Toast.makeText(this, "Viendo ${area.nombre_area}", Toast.LENGTH_SHORT).show()
                             baseBinding.drawerLayout.closeDrawer(GravityCompat.START)
                         }
@@ -222,8 +199,6 @@ open class BaseActivity : AppCompatActivity() {
             }
     }
 
-    // --- Función para que el botón ☰ abra el menú ---
-    // La clase hija (InicioActivity) debe llamar a esto
     protected fun setupMenuButton(btnMenu: View) {
         btnMenu.setOnClickListener {
             if (baseBinding.drawerLayout.isDrawerOpen(GravityCompat.START)) {

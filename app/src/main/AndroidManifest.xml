@@ -14,7 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.InfinityLive">
-
+        <activity
+            android:name=".RutinasActivity"
+            android:exported="false" />
         <activity
             android:name=".PerfilActivity"
             android:exported="false" />
@@ -33,12 +35,10 @@
         <activity
             android:name=".CrearProductoActivity"
             android:exported="false" />
-
         <activity
             android:name=".RevivirActivity"
             android:exported="false"
             android:theme="@style/Theme.InfinityLive.NoActionBar" />
-
         <activity
             android:name=".SelectAreaActivity"
             android:exported="false" />
@@ -60,10 +60,10 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

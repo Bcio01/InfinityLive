@@ -4,10 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.Query
+import com.saamael.infinitylive.GestionHabitosActivity
 import com.saamael.infinitylive.databinding.ActivityTiendaBinding
 
 class TiendaActivity : BaseActivity() {
@@ -44,10 +44,8 @@ class TiendaActivity : BaseActivity() {
         // 1. Botón Inicio (Hábitos) -> Volver a InicioActivity
         binding.MenuInferior.menuHabitos.setOnClickListener {
             val intent = Intent(this, InicioActivity::class.java)
-            // Reorder to front evita que se cree una nueva instancia si ya existe
             intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
             startActivity(intent)
-            // Opcional: finish() si quieres cerrar la tienda al salir
         }
 
         // 2. Botón Diamante -> Crear Hábito
@@ -61,10 +59,16 @@ class TiendaActivity : BaseActivity() {
             binding.scrollViewTienda.smoothScrollTo(0, 0)
         }
 
-        // 4. Placeholders
+        // 4. Botón Rutinas (NUEVO LINK)
         binding.MenuInferior.menuDiarias.setOnClickListener {
-            Toast.makeText(this, "Próximamente", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, RutinasActivity::class.java)
+            // FLAG_ACTIVITY_REORDER_TO_FRONT es útil si quieres mantener el estado
+            // de RutinasActivity si el usuario va y vuelve. Si no, quítalo.
+            intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+            startActivity(intent)
         }
+
+        // 5. Placeholder
         binding.MenuInferior.menuPendientes.setOnClickListener {
             Toast.makeText(this, "Próximamente", Toast.LENGTH_SHORT).show()
         }

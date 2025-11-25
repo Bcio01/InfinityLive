@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/background"
-    tools:context=".GestionHabitosActivity">
+    tools:context=".com.saamael.infinitylive.GestionHabitosActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -22,7 +22,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:layout_marginTop="15dp">
 
                 <TextView
                     android:layout_width="0dp"
@@ -30,7 +31,7 @@
                     android:layout_weight="1"
                     android:paddingTop="16dp"
                     android:paddingStart="20dp"
-                    android:text="Tienda de Pases"
+                    android:text="Nuevo Hábito"
                     android:textColor="@color/success"
                     android:textSize="25sp"
                     android:textStyle="bold"/>
@@ -56,89 +57,155 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16sp"
                     android:background="@drawable/rounded_input"
-                    android:hint="Descripción (Ej: Hacer ejercicio)"
+                    android:hint="titulo (Ej: Hacer ejercicio)"
                     android:inputType="textCapSentences"
                     android:textColor="@color/text_primary"
                     android:textColorHint="@color/text_secondary" />
 
-                <Spinner
-                    android:id="@+id/spinnerAreas"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="16sp"
-                    android:background="@drawable/rounded_input"
-                    android:padding="8dp"/>
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/switchPositivo"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24sp"
-                    android:text="Hábito Positivo"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/spinnerAreas"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16sp"
+                        android:background="@drawable/rounded_input"/>
+
+
+                </LinearLayout>
+
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:columnCount="2"
+                    android:rowCount="1"
+                    android:alignmentMode="alignMargins"
+                    android:columnOrderPreserved="false"
+                    android:useDefaultMargins="true"
+                    android:layout_marginTop="20dp">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnTogglePositivo"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_columnWeight="1"
+                        android:layout_margin="4dp"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp"
+                        android:text="Habito Positivo"
+                        android:textSize="12dp"
+                        app:cornerRadius="12dp"
+                        app:strokeWidth="1dp"
+                        app:backgroundTint="@color/divider"
+                        android:textColor="@color/success"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnToggleNegativo"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_columnWeight="1"
+                        android:layout_margin="4dp"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp"
+                        android:text="Habito Negativo"
+                        android:textSize="12dp"
+                        app:cornerRadius="12dp"
+                        app:strokeWidth="1dp"
+                        app:backgroundTint="@color/divider"
+                        android:textColor="@color/warning"/>
+                </GridLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Dificultad"
                     android:textColor="@color/text_primary"
-                    android:textSize="18sp"
-                    android:checked="true"/>
+                    android:layout_marginTop="16dp"/>
 
-                <LinearLayout
-                    android:id="@+id/layoutRecompensas"
+                <GridLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="visible">
+                    android:columnCount="3"
+                    android:rowCount="2"
+                    android:alignmentMode="alignMargins"
+                    android:columnOrderPreserved="false"
+                    android:useDefaultMargins="true">
 
-                    <EditText
-                        android:id="@+id/etXpGanada"
-                        android:layout_width="match_parent"
+                    <!-- BOTÓN FÁCIL: Usa el selector verde -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnArea1"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16sp"
-                        android:background="@drawable/rounded_input"
-                        android:hint="XP Ganada (Ej: 15)"
-                        android:inputType="number"
-                        android:textColor="@color/text_primary"
-                        android:textColorHint="@color/text_secondary" />
+                        android:layout_columnWeight="1"
+                        android:layout_margin="6dp"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp"
+                        android:text="Facil"
+                        android:checkable="true"
+                        app:cornerRadius="12dp"
+                        app:backgroundTint="@color/surface"
 
-                    <EditText
-                        android:id="@+id/etMonedasGanadas"
-                        android:layout_width="match_parent"
+                        app:strokeColor="@color/selector_dificultad_facil"
+                        android:textColor="@color/selector_dificultad_facil"/>
+
+                    <!-- BOTÓN MEDIO: Usa el selector amarillo -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnArea2"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16sp"
-                        android:background="@drawable/rounded_input"
-                        android:hint="Monedas Ganadas (Ej: 10)"
-                        android:inputType="number"
-                        android:textColor="@color/text_primary"
-                        android:textColorHint="@color/text_secondary" />
-                </LinearLayout>
+                        android:layout_columnWeight="1"
+                        android:layout_margin="6dp"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp"
+                        android:text="Medio"
+                        android:checkable="true"
+                        app:cornerRadius="12dp"
+                        app:backgroundTint="@color/surface"
 
-                <LinearLayout
-                    android:id="@+id/layoutCastigo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone">
+                        app:strokeColor="@color/selector_dificultad_medio"
+                        android:textColor="@color/selector_dificultad_medio"/>
 
-                    <EditText
-                        android:id="@+id/etHpPerdida"
-                        android:layout_width="match_parent"
+                    <!-- BOTÓN DIFÍCIL: Usa el selector rojo -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnArea3"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16sp"
-                        android:background="@drawable/rounded_input"
-                        android:hint="HP Perdida (Ej: 50)"
-                        android:inputType="number"
-                        android:textColor="@color/text_primary"
-                        android:textColorHint="@color/text_secondary" />
-                </LinearLayout>
+                        android:layout_columnWeight="1"
+                        android:layout_margin="6dp"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp"
+                        android:text="Dificil"
+                        android:checkable="true"
+                        app:cornerRadius="12dp"
+                        app:backgroundTint="@color/surface"
+
+                        app:strokeColor="@color/selector_dificultad_dificil"
+                        android:textColor="@color/selector_dificultad_dificil"/>
+
+                </GridLayout>
 
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnGuardarHabito"
                     android:layout_width="200sp"
-                    android:layout_height="50sp"
-                    android:layout_marginTop="40dp"
+                    android:layout_height="55sp"
                     android:layout_gravity="center_horizontal"
-                    android:text="Guardar Hábito"
-                    android:textSize="20sp"
-                    android:backgroundTint="@color/achievement"
-                    android:textColor="@color/text_primary"/>
+                    android:layout_marginTop="50dp"
+                    android:backgroundTint="@color/divider"
+                    app:strokeColor="@color/text_secondary"
+                    app:strokeWidth="2dp"
+                    android:text="Craer Habito"
+                    android:textColor="@color/text_primary"
+                    android:textSize="14sp" />
 
             </LinearLayout>
         </LinearLayout>

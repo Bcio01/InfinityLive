@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Estado Seleccionado (Checked) -> Color Amarillo (Warning) -->
+    <item android:color="@color/warning" android:state_checked="true"/>
+
+    <!-- Estado Presionado -->
+    <item android:color="@color/warning" android:state_pressed="true"/>
+
+    <!-- Estado Por Defecto -->
+    <item android:color="@color/text_secondary"/>
+</selector>
