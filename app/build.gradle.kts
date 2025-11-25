@@ -17,6 +17,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        multiDexEnabled = true
     }
 
     buildTypes {
@@ -62,6 +64,14 @@ dependencies {
 
     // Firestore
     implementation("com.google.firebase:firebase-firestore")
+
+    // Realtime Database (firebase)
+    implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
+    implementation("androidx.multidex:multidex:2.0.1")
+
+    // Librerías SIN número de versión
+    implementation("com.google.firebase:firebase-database:21.0.0")
+    implementation("com.google.firebase:firebase-analytics:22.0.0")
 
     // Google Sign-In
     implementation("com.google.android.gms:play-services-auth:21.0.0")

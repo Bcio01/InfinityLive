@@ -5,10 +5,15 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.saamael.infinitylive.databinding.ActivityRutinasBinding
+// 1. Imports de Firebase
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class RutinasActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRutinasBinding
+    // 2. Variable para la referencia a la base de datos
+    private lateinit var databaseRef: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,19 +21,35 @@ class RutinasActivity : AppCompatActivity() {
         binding = ActivityRutinasBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 3. Inicializar la referencia.
+        // IMPORTANTE: "casa/led" debe ser la misma ruta que pusiste en el código de Arduino
+        databaseRef = FirebaseDatabase.getInstance().getReference("casa/led")
+
         setupBottomMenu()
         setupLedButtons()
     }
 
     private fun setupLedButtons() {
         binding.btnLedOn.setOnClickListener {
-            // AQUÍ IRÁ TU LÓGICA (Bluetooth, WiFi, API request, etc.)
-            Toast.makeText(this, "LED Encendido", Toast.LENGTH_SHORT).show()
+            // Enviar "ON" a Firebase
+            databaseRef.setValue("ON")
+                .addOnSuccessListener {
+                    Toast.makeText(this, "LED Encendido", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
         }
 
         binding.btnLedOff.setOnClickListener {
-            // AQUÍ IRÁ TU LÓGICA
-            Toast.makeText(this, "LED Apagado", Toast.LENGTH_SHORT).show()
+            // Enviar "OFF" a Firebase
+            databaseRef.setValue("OFF")
+                .addOnSuccessListener {
+                    Toast.makeText(this, "LED Apagado", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
         }
     }
 
@@ -42,7 +63,7 @@ class RutinasActivity : AppCompatActivity() {
             finish() // Cerramos esta actividad actual
         }
 
-        // 2. Icono Diarias (Podrías dejarlo como 'Próximamente' o que sea esta misma pantalla)
+        // 2. Icono Diarias
         binding.MenuInferior.menuDiarias.setOnClickListener {
             Toast.makeText(this, "Ya estás en Control", Toast.LENGTH_SHORT).show()
         }
