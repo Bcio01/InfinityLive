@@ -46,9 +46,11 @@ class PerfilActivity : BaseActivity() {
 
         binding = ActivityPerfilBinding.inflate(layoutInflater)
         baseBinding.contentFrame.addView(binding.root)
-        setupMenuButton(binding.btnMenu)
 
         dbHelper = PerfilDbHelper(this)
+
+        setupBottomMenu()
+        logout()
 
         if (uid != null) {
             cargarDatosDeFirebase()
@@ -61,6 +63,8 @@ class PerfilActivity : BaseActivity() {
             startActivity(intent)
             finish()
         }
+
+
 
         // --- Configuración de Botones ---
 
@@ -251,4 +255,51 @@ class PerfilActivity : BaseActivity() {
         }
         return path
     }
+
+    private fun logout() {
+        binding.logoutMenu.setOnClickListener {
+            mAuth.signOut()
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
+        }
+    }
+
+    // --- NAVEGACIÓN MENU INFERIOR ---
+    private fun setupBottomMenu() {
+        // 1. Botón Inicio (Volver a InicioActivity)
+        binding.MenuInferior.menuHabitos.setOnClickListener {
+            val intent = Intent(this, InicioActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+            startActivity(intent)
+            // finish() // Opcional: Si quieres cerrar Perfil al salir
+        }
+
+        // 2. Botón Rutinas
+        binding.MenuInferior.menuDiarias.setOnClickListener {
+            val intent = Intent(this, RutinasActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+            startActivity(intent)
+        }
+
+        // 3. Botón Central (Crear)
+        binding.MenuInferior.fabDiamondContainer.setOnClickListener {
+            val intent = Intent(this, GestionHabitosActivity::class.java)
+            startActivity(intent)
+        }
+
+        // 4. Pendientes (Placeholder)
+        binding.MenuInferior.menuPendientes.setOnClickListener {
+            Toast.makeText(this, "Próximamente", Toast.LENGTH_SHORT).show()
+        }
+
+        // 5. Tienda
+        binding.MenuInferior.menuRecompensas.setOnClickListener {
+            val intent = Intent(this, TiendaActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+            startActivity(intent)
+        }
+    }
+
 }

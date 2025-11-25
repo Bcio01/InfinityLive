@@ -1,41 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    android:orientation="vertical"
     tools:context=".PerfilActivity">
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/scrollViewContent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@color/background"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/MenuInferior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="24dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingStart="20sp"
-                android:paddingTop="40sp"
-                android:paddingEnd="20sp">
-                <Button
-                    android:id="@+id/btnMenu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minWidth="48dp"
-                    android:backgroundTint="@color/surface"
-                    android:text="☰"
-                    android:textColor="@color/primary"
-                    android:textSize="24sp" />
+                android:paddingStart="20dp"
+                android:paddingTop="40dp"
+                android:paddingEnd="20dp">
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -44,14 +41,23 @@
                     android:text="Mi Perfil"
                     android:textColor="@color/success"
                     android:textSize="20sp" />
+
+                    <ImageView
+                        android:id="@+id/logoutMenu"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/logouticon"
+                        android:layout_marginEnd="12dp"
+                        android:contentDescription="Icono de Logout"/>
+
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="5dp"
+                android:layout_height="1dp"
                 android:background="@color/divider"
-                android:layout_marginStart="90sp"
-                android:layout_marginEnd="20sp"/>
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -66,6 +72,7 @@
                     android:layout_gravity="center_horizontal"
                     android:src="@drawable/usericon"
                     android:scaleType="centerCrop"/>
+
                 <Button
                     android:id="@+id/btnCambiarFoto"
                     style="@style/Widget.MaterialComponents.Button.TextButton"
@@ -95,7 +102,7 @@
                         android:layout_marginTop="24dp"
                         android:src="@android:drawable/ic_menu_edit"
                         app:tint="@color/primary"
-                        android:background="@color/background"/>
+                        android:background="@android:color/transparent"/>
                 </LinearLayout>
 
                 <TextView
@@ -109,7 +116,6 @@
                     android:hint="Toca el lápiz para añadir una biografía..."
                     tools:text="" />
 
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -117,6 +123,7 @@
                     android:text="Estadísticas (Solo Lectura)"
                     android:textColor="@color/acent"
                     android:textSize="16sp"/>
+
                 <TextView
                     android:id="@+id/tvPerfilNombre"
                     android:layout_width="match_parent"
@@ -124,6 +131,7 @@
                     android:padding="12dp"
                     android:textColor="@color/text_secondary"
                     tools:text="Nombre: Camilo Suarez" />
+
                 <TextView
                     android:id="@+id/tvPerfilEmail"
                     android:layout_width="match_parent"
@@ -131,6 +139,7 @@
                     android:padding="12dp"
                     android:textColor="@color/text_secondary"
                     tools:text="Email: c.suarez@gmail.com" />
+
                 <TextView
                     android:id="@+id/tvPerfilHp"
                     android:layout_width="match_parent"
@@ -139,28 +148,41 @@
                     android:textColor="@color/text_secondary"
                     tools:text="HP: 1000 / 1000" />
 
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="32dp"
                     android:gravity="center_horizontal">
 
                     <Button
-                    android:id="@+id/btnEliminarPerfil"
-                    android:layout_width="wrap_content" android:layout_height="50sp"
-                    android:layout_marginEnd="16dp" android:backgroundTint="@color/warning"
-                    android:text="Limpiar Perfil" />
+                        android:id="@+id/btnEliminarPerfil"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:backgroundTint="@color/warning"
+                        android:text="Limpiar" />
 
                     <Button
                         android:id="@+id/btnGuardarPerfil"
-                        android:layout_width="wrap_content" android:layout_height="50sp"
-                        android:text="Guardar Cambios"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Guardar"
                         android:backgroundTint="@color/success"/>
 
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+
+    <include
+        android:id="@+id/MenuInferior"
+        layout="@layout/bottom_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="50dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

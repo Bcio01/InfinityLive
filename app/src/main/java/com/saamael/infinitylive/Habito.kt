@@ -10,6 +10,7 @@ data class Habito(
     var descripcion: String = "",
     var es_positivo: Boolean = true,
     var area_id: String? = null, // El ID del 'Area' al que pertenece
+    var dificultad: String = "facil", // Valores posibles: "facil", "medio", "dificil"
 
     var xp_ganada: Long = 0L,
     var monedas_ganadas: Long = 0L,

@@ -233,8 +233,13 @@ class InicioActivity : BaseActivity(),
         binding.MenuInferior.menuHabitos.setOnClickListener {
             binding.scrollViewContent.smoothScrollTo(0, 0)
         }
+        // 4. Botón Rutinas (NUEVO LINK)
         binding.MenuInferior.menuDiarias.setOnClickListener {
-            Toast.makeText(this, "Próximamente", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, RutinasActivity::class.java)
+            // FLAG_ACTIVITY_REORDER_TO_FRONT es útil si quieres mantener el estado
+            // de RutinasActivity si el usuario va y vuelve. Si no, quítalo.
+            intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+            startActivity(intent)
         }
         binding.MenuInferior.fabDiamondContainer.setOnClickListener {
             val intent = Intent(this, GestionHabitosActivity::class.java)
