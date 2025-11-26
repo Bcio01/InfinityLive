@@ -76,25 +76,6 @@
                     android:textSize="22sp"/>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/btnCrearProducto"
-                    android:layout_width="200dp"
-                    android:layout_height="50dp"
-                    android:text="Crea Tu Recompensa"
-                    android:textColor="@color/success"
-                    app:cornerRadius="30dp"
-                    app:strokeColor="@color/divider"
-                    app:strokeWidth="2dp"
-                    android:backgroundTint="@color/surface"/>
-
-            </LinearLayout>
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvTienda"
                 android:layout_width="match_parent"
@@ -102,9 +83,7 @@
                 android:layout_marginTop="20dp"
                 android:nestedScrollingEnabled="false"
                 tools:listitem="@layout/item_tienda"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
-        </LinearLayout>
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/> </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
     <include
