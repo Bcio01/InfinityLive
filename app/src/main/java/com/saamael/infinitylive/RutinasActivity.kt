@@ -8,17 +8,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.saamael.infinitylive.databinding.ActivityRutinasBinding
-import com.google.firebase.database.*
-import java.util.Calendar
+// 1. Imports de Firebase
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class RutinasActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRutinasBinding
+    // 2. Variable para la referencia a la base de datos
     private lateinit var databaseRef: DatabaseReference
-
-    // Variables para la lista
-    private lateinit var adapter: RutinasAdapter
-    private val listaRutinas = mutableListOf<Rutina>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,15 +24,36 @@ class RutinasActivity : AppCompatActivity() {
         binding = ActivityRutinasBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 1. Referencia a la base de datos
-        databaseRef = FirebaseDatabase.getInstance().getReference("casa/rutinas")
+        // 3. Inicializar la referencia.
+        // IMPORTANTE: "casa/led" debe ser la misma ruta que pusiste en el código de Arduino
+        databaseRef = FirebaseDatabase.getInstance().getReference("casa/led")
 
-        // 2. Configuramos la lista y cargamos datos
-        configurarRecycler()
-        cargarDatosDeFirebase()
-
-        // 3. Configuramos el menú (Aquí está la lógica del botón Diamante)
         setupBottomMenu()
+        setupLedButtons()
+    }
+
+    private fun setupLedButtons() {
+        binding.btnLedOn.setOnClickListener {
+            // Enviar "ON" a Firebase
+            databaseRef.setValue("ON")
+                .addOnSuccessListener {
+                    Toast.makeText(this, "LED Encendido", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+        }
+
+        binding.btnLedOff.setOnClickListener {
+            // Enviar "OFF" a Firebase
+            databaseRef.setValue("OFF")
+                .addOnSuccessListener {
+                    Toast.makeText(this, "LED Apagado", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+        }
     }
 
     private fun setupBottomMenu() {
@@ -46,7 +65,7 @@ class RutinasActivity : AppCompatActivity() {
             finish()
         }
 
-        // B. Icono Rutinas (Ya estamos aquí)
+        // 2. Icono Diarias
         binding.MenuInferior.menuDiarias.setOnClickListener {
             Toast.makeText(this, "Ya estás en Rutinas", Toast.LENGTH_SHORT).show()
         }
