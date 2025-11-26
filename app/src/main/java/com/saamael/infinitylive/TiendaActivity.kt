@@ -7,7 +7,6 @@ import androidx.appcompat.app.AlertDialog
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.Query
-import com.saamael.infinitylive.GestionHabitosActivity
 import com.saamael.infinitylive.databinding.ActivityTiendaBinding
 
 class TiendaActivity : BaseActivity() {
@@ -20,10 +19,8 @@ class TiendaActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityTiendaBinding.inflate(layoutInflater)
-        // CAMBIO 1: Usamos setContentView directo para que el ConstraintLayout ocupe todo
         setContentView(binding.root)
 
-        // CAMBIO 2: Configurar el menú inferior en lugar del lateral
         setupBottomMenu()
 
         if (uid != null) {
@@ -31,44 +28,38 @@ class TiendaActivity : BaseActivity() {
             setupRecyclerView()
             crearProductosPorDefecto()
 
-            binding.btnCrearProducto.setOnClickListener {
-                val intent = Intent(this, CrearProductoActivity::class.java)
-                startActivity(intent)
-            }
+            // ELIMINADO: binding.btnCrearProducto.setOnClickListener...
         }
     }
 
-    // --- NUEVO: Lógica del Menú Inferior ---
     private fun setupBottomMenu() {
-
-        // 1. Botón Inicio (Hábitos) -> Volver a InicioActivity
+        // 1. Botón Inicio
         binding.MenuInferior.menuHabitos.setOnClickListener {
             val intent = Intent(this, InicioActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
             startActivity(intent)
         }
 
-        // 2. Botón Diamante -> Crear Hábito
+        // 2. BOTÓN DIAMANTE (Mover lógica aquí)
+        // Ahora abre "CrearProductoActivity" en lugar de Gestión de Hábitos
         binding.MenuInferior.fabDiamondContainer.setOnClickListener {
-            val intent = Intent(this, GestionHabitosActivity::class.java)
+            val intent = Intent(this, CrearProductoActivity::class.java)
             startActivity(intent)
         }
 
-        // 3. Botón Recompensas (Donde estamos) -> Scroll arriba
+        // 3. Botón Recompensas (Scroll arriba)
         binding.MenuInferior.menuRecompensas.setOnClickListener {
             binding.scrollViewTienda.smoothScrollTo(0, 0)
         }
 
-        // 4. Botón Rutinas (NUEVO LINK)
+        // 4. Botón Rutinas
         binding.MenuInferior.menuDiarias.setOnClickListener {
             val intent = Intent(this, RutinasActivity::class.java)
-            // FLAG_ACTIVITY_REORDER_TO_FRONT es útil si quieres mantener el estado
-            // de RutinasActivity si el usuario va y vuelve. Si no, quítalo.
             intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
             startActivity(intent)
         }
 
-        // 5. Placeholder
+        // 5. Placeholder Social
         binding.MenuInferior.menuPendientes.setOnClickListener {
             Toast.makeText(this, "Próximamente", Toast.LENGTH_SHORT).show()
         }
@@ -99,10 +90,8 @@ class TiendaActivity : BaseActivity() {
             confirmarCompra(item)
         }
 
-        // --- Usamor GridLayoutManager con 3 columnas ---
+        // Grid de 3 columnas
         binding.rvTienda.layoutManager = androidx.recyclerview.widget.GridLayoutManager(this, 3)
-
-        // binding.rvTienda.layoutManager = LinearLayoutManager(this)
         binding.rvTienda.adapter = adapter
         binding.rvTienda.isNestedScrollingEnabled = false
         binding.rvTienda.itemAnimator = null
@@ -158,14 +147,7 @@ class TiendaActivity : BaseActivity() {
                 val basicos = listOf(
                     ShopItem("1", "Pase Comida Chatarra", "Permite comer algo no saludable.", 100),
                     ShopItem("2", "Pase Procrastinación", "5 minutos extra sin culpa.", 50),
-                    ShopItem("3", "Día Libre", "Un día sin penalizaciones.", 500),
-                    ShopItem("4", "sdlkfj", "Permite comer algo no saludable.", 100),
-                    ShopItem("5", "oli item de prueba", "5 minutos extra sin culpa.", 50),
-                    ShopItem("6", "probando un item", "Un día sin penalizaciones.", 500),
-                    ShopItem("7", "un item random", "Permite comer algo no saludable.", 100),
-                    ShopItem("8", "juegate un loto", "5 minutos extra sin culpa.", 50),
-                    ShopItem("9", "una escapadita", "Un día sin penalizaciones.", 500)
-
+                    ShopItem("3", "Día Libre", "Un día sin penalizaciones.", 500)
                 )
                 basicos.forEach { itemsRef.add(it) }
             }
