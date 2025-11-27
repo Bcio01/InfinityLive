@@ -8,15 +8,21 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.saamael.infinitylive.databinding.ActivityRutinasBinding
-// 1. Imports de Firebase
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import java.util.Calendar
 
 class RutinasActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRutinasBinding
-    // 2. Variable para la referencia a la base de datos
     private lateinit var databaseRef: DatabaseReference
+
+    // Variables necesarias para el RecyclerView
+    private val listaRutinas = mutableListOf<Rutina>()
+    private lateinit var adapter: RutinasAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,83 +30,33 @@ class RutinasActivity : AppCompatActivity() {
         binding = ActivityRutinasBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 3. Inicializar la referencia.
-        // IMPORTANTE: "casa/led" debe ser la misma ruta que pusiste en el código de Arduino
-        databaseRef = FirebaseDatabase.getInstance().getReference("casa/led")
+        // 1. Referencia a la base de datos
+        // IMPORTANTE: Usamos "casa/rutinas" para guardar la LISTA de alarmas/horarios.
+        // "casa/led" se deja solo para el control manual (ON/OFF) desde otra pantalla.
+        databaseRef = FirebaseDatabase.getInstance().getReference("casa/rutinas")
 
+        // 2. Configuración inicial
         setupBottomMenu()
-        setupLedButtons()
-    }
-
-    private fun setupLedButtons() {
-        binding.btnLedOn.setOnClickListener {
-            // Enviar "ON" a Firebase
-            databaseRef.setValue("ON")
-                .addOnSuccessListener {
-                    Toast.makeText(this, "LED Encendido", Toast.LENGTH_SHORT).show()
-                }
-                .addOnFailureListener { e ->
-                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
-        }
-
-        binding.btnLedOff.setOnClickListener {
-            // Enviar "OFF" a Firebase
-            databaseRef.setValue("OFF")
-                .addOnSuccessListener {
-                    Toast.makeText(this, "LED Apagado", Toast.LENGTH_SHORT).show()
-                }
-                .addOnFailureListener { e ->
-                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
-        }
-    }
-
-    private fun setupBottomMenu() {
-        // A. Icono Inicio
-        binding.MenuInferior.menuHabitos.setOnClickListener {
-            val intent = Intent(this, InicioActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            startActivity(intent)
-            finish()
-        }
-
-        // 2. Icono Diarias
-        binding.MenuInferior.menuDiarias.setOnClickListener {
-            Toast.makeText(this, "Ya estás en Rutinas", Toast.LENGTH_SHORT).show()
-        }
-
-        // C. BOTÓN DIAMANTE (NUEVA LÓGICA DE AGREGAR)
-        binding.MenuInferior.fabDiamondContainer.setOnClickListener {
-            mostrarDialogoAgregar()
-        }
-
-        // D. Icono Social
-        binding.MenuInferior.menuPendientes.setOnClickListener {
-            Toast.makeText(this, "Próximamente", Toast.LENGTH_SHORT).show()
-        }
-
-        // E. Icono Tienda
-        binding.MenuInferior.menuRecompensas.setOnClickListener {
-            val intent = Intent(this, TiendaActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-            startActivity(intent)
-        }
+        configurarRecycler()       // Faltaba llamar a esto
+        cargarDatosDeFirebase()    // Faltaba llamar a esto
     }
 
     private fun configurarRecycler() {
         adapter = RutinasAdapter(listaRutinas,
             onBorrarClick = { rutina ->
-                // Borrar de Firebase
+                // Borrar de Firebase usando el ID de la rutina
                 if (rutina.id.isNotEmpty()) {
                     databaseRef.child(rutina.id).removeValue()
+                        .addOnSuccessListener {
+                            Toast.makeText(this, "Rutina eliminada", Toast.LENGTH_SHORT).show()
+                        }
                         .addOnFailureListener {
                             Toast.makeText(this, "Error al borrar", Toast.LENGTH_SHORT).show()
                         }
                 }
             },
             onSwitchChange = { rutina, isActive ->
-                // Actualizar estado en Firebase
+                // Actualizar solo el estado "activa" en Firebase
                 if (rutina.id.isNotEmpty()) {
                     databaseRef.child(rutina.id).child("activa").setValue(isActive)
                 }
@@ -118,10 +74,13 @@ class RutinasActivity : AppCompatActivity() {
                 for (data in snapshot.children) {
                     val rutina = data.getValue(Rutina::class.java)
                     if (rutina != null) {
-                        rutina.id = data.key ?: ""
+                        rutina.id = data.key ?: "" // Guardamos la key de Firebase en el objeto
                         listaRutinas.add(rutina)
                     }
                 }
+                // Ordenar por hora y minuto para que se vean ordenadas
+                listaRutinas.sortWith(compareBy({ it.hora }, { it.minuto }))
+
                 adapter.notifyDataSetChanged()
             }
 
@@ -131,6 +90,38 @@ class RutinasActivity : AppCompatActivity() {
         })
     }
 
+    private fun setupBottomMenu() {
+        // A. Icono Inicio
+        binding.MenuInferior.menuHabitos.setOnClickListener {
+            val intent = Intent(this, InicioActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            finish() // Cerramos RutinasActivity al ir a Inicio
+        }
+
+        // B. Icono Diarias (Actual)
+        binding.MenuInferior.menuDiarias.setOnClickListener {
+            Toast.makeText(this, "Ya estás en Rutinas", Toast.LENGTH_SHORT).show()
+        }
+
+        // C. BOTÓN DIAMANTE (Agregar Rutina)
+        binding.MenuInferior.fabDiamondContainer.setOnClickListener {
+            mostrarDialogoAgregar()
+        }
+
+        // D. Icono Social
+        binding.MenuInferior.menuPendientes.setOnClickListener {
+            Toast.makeText(this, "Próximamente", Toast.LENGTH_SHORT).show()
+        }
+
+        // E. Icono Tienda
+        binding.MenuInferior.menuRecompensas.setOnClickListener {
+            val intent = Intent(this, TiendaActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+            startActivity(intent)
+        }
+    }
+
     private fun mostrarDialogoAgregar() {
         val calendario = Calendar.getInstance()
         val horaActual = calendario.get(Calendar.HOUR_OF_DAY)
@@ -138,15 +129,16 @@ class RutinasActivity : AppCompatActivity() {
 
         TimePickerDialog(this, { _, hora, minuto ->
             mostrarDialogoTipo(hora, minuto)
-        }, horaActual, minutoActual, true).show()
+        }, horaActual, minutoActual, true).show() // true = formato 24h
     }
 
     private fun mostrarDialogoTipo(hora: Int, minuto: Int) {
-        val opciones = arrayOf("Luz (LED)", "Alarma (Buzzer)")
+        val opciones = arrayOf("Encender Luz (LED)", "Sonar Alarma (Buzzer)")
 
         AlertDialog.Builder(this)
             .setTitle("¿Qué acción realizará?")
             .setSingleChoiceItems(opciones, 0) { dialog, which ->
+                // Mapeamos la selección a Strings que el Arduino entienda fácil
                 val tipoSeleccionado = if (which == 0) "LUZ" else "BUZZER"
                 guardarRutinaEnFirebase(hora, minuto, tipoSeleccionado)
                 dialog.dismiss()
@@ -155,10 +147,11 @@ class RutinasActivity : AppCompatActivity() {
     }
 
     private fun guardarRutinaEnFirebase(hora: Int, minuto: Int, tipo: String) {
+        // Generar una clave única (Key) para la nueva rutina
         val nuevoId = databaseRef.push().key ?: return
 
         val nuevaRutina = Rutina(
-            id = nuevoId,
+            id = nuevoId, // Guardamos el ID dentro del objeto también para facilitar el borrado
             hora = hora,
             minuto = minuto,
             tipo = tipo,
