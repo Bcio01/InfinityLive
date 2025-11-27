@@ -28,6 +28,9 @@
             android:name=".TiendaActivity"
             android:exported="false" />
         <activity
+            android:name=".SocialActivity"
+            android:exported="false"/>
+        <activity
             android:name=".GestionHabitosActivity"
             android:exported="false" />
         <activity

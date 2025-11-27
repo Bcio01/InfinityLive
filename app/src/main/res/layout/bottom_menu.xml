@@ -114,7 +114,7 @@
             android:layout_weight="1" />
 
         <LinearLayout
-            android:id="@+id/menuPendientes"
+            android:id="@+id/menuSocial"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -125,14 +125,14 @@
             android:background="?attr/selectableItemBackground">
 
             <ImageView
-                android:id="@+id/iconPendientes"
+                android:id="@+id/iconSocial"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@drawable/iconsocialunselected"
                 app:tint="@color/text_secondary"/>
 
             <TextView
-                android:id="@+id/textPendientes"
+                android:id="@+id/textSocial"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Social"

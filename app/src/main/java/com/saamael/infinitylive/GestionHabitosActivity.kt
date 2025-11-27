@@ -102,9 +102,9 @@ class GestionHabitosActivity : BaseActivity() {
     // --- ACTUALIZAR TEXTO CON RANGOS ---
     private fun actualizarTextoBotonesDificultad() {
         if (esPositivo) {
-            binding.btnArea1.text = "Fácil\n(5-10 $)"
-            binding.btnArea2.text = "Medio\n(10-15 $)"
-            binding.btnArea3.text = "Difícil\n(15-20 $)"
+            binding.btnArea1.text = "Fácil\n5$-10xp"
+            binding.btnArea2.text = "Medio\n10$-15xp"
+            binding.btnArea3.text = "Difícil\n15$-20xp"
         } else {
             binding.btnArea1.text = "Fácil\n(-15 HP)"
             binding.btnArea2.text = "Medio\n(-35 HP)"

@@ -46,6 +46,12 @@ class TiendaActivity : BaseActivity() {
             val intent = Intent(this, CrearProductoActivity::class.java)
             startActivity(intent)
         }
+        binding.MenuInferior.menuSocial.setOnClickListener {
+            val intent = Intent(this, SocialActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+            startActivity(intent)
+            overridePendingTransition(0, 0)
+        }
 
         // 3. Botón Recompensas (Scroll arriba)
         binding.MenuInferior.menuRecompensas.setOnClickListener {
@@ -57,11 +63,6 @@ class TiendaActivity : BaseActivity() {
             val intent = Intent(this, RutinasActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
             startActivity(intent)
-        }
-
-        // 5. Placeholder Social
-        binding.MenuInferior.menuPendientes.setOnClickListener {
-            Toast.makeText(this, "Próximamente", Toast.LENGTH_SHORT).show()
         }
     }
 

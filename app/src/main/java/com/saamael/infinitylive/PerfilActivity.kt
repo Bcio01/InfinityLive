@@ -289,11 +289,6 @@ class PerfilActivity : BaseActivity() {
             startActivity(intent)
         }
 
-        // 4. Pendientes (Placeholder)
-        binding.MenuInferior.menuPendientes.setOnClickListener {
-            Toast.makeText(this, "Próximamente", Toast.LENGTH_SHORT).show()
-        }
-
         // 5. Tienda
         binding.MenuInferior.menuRecompensas.setOnClickListener {
             val intent = Intent(this, TiendaActivity::class.java)

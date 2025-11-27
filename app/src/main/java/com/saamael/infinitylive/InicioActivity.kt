@@ -17,6 +17,8 @@ import com.google.firebase.firestore.Query
 import com.saamael.infinitylive.databinding.ActivityInicioBinding
 import com.saamael.infinitylive.db.PerfilContract
 import com.saamael.infinitylive.db.PerfilDbHelper
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import java.io.File
 
 class InicioActivity : BaseActivity(),
@@ -63,6 +65,36 @@ class InicioActivity : BaseActivity(),
         }
     }
 
+    fun sincronizarDatosConNube() {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val db = FirebaseFirestore.getInstance()
+        val currentUser = FirebaseAuth.getInstance().currentUser
+
+        // 1. Preparamos el resumen de áreas
+        val resumenAreas = mutableMapOf<String, Int>()
+        areasUsuario.values.forEach { area ->
+            resumenAreas[area.nombre_area] = area.nivel.toInt()
+        }
+
+        // Calcular nivel global (opcional)
+        val nivelTotal = if (resumenAreas.isNotEmpty()) resumenAreas.values.sum() / resumenAreas.size else 1
+
+        val misDatos = hashMapOf(
+            "id" to userId,
+            "nombre" to (currentUser?.displayName ?: "Usuario"),
+            "vidaActual" to currentHp.toInt(),
+            "correo" to (currentUser?.email ?: ""),
+            "nivelGlobal" to nivelTotal,
+            "areasResumen" to resumenAreas
+        )
+
+        db.collection("usuarios").document(userId)
+            .set(misDatos, com.google.firebase.firestore.SetOptions.merge())
+            .addOnSuccessListener {
+                android.util.Log.d("Nube", "Perfil sincronizado")
+            }
+    }
+
     // --- CICLO DE VIDA ---
     override fun onStart() {
         super.onStart()
@@ -91,6 +123,7 @@ class InicioActivity : BaseActivity(),
     override fun onResume() {
         super.onResume()
         cargarFotoPerfilDashboard()
+        sincronizarDatosConNube()
     }
 
     // --- Listeners de Datos Seguros ---
@@ -245,8 +278,10 @@ class InicioActivity : BaseActivity(),
             val intent = Intent(this, GestionHabitosActivity::class.java)
             startActivity(intent)
         }
-        binding.MenuInferior.menuPendientes.setOnClickListener {
-            Toast.makeText(this, "Próximamente", Toast.LENGTH_SHORT).show()
+        binding.MenuInferior.menuSocial.setOnClickListener {
+            val intent = Intent(this, SocialActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+            startActivity(intent)
         }
         binding.MenuInferior.menuRecompensas.setOnClickListener {
             val intent = Intent(this, TiendaActivity::class.java)

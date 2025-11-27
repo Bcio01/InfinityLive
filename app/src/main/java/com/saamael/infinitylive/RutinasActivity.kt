@@ -108,10 +108,11 @@ class RutinasActivity : AppCompatActivity() {
         binding.MenuInferior.fabDiamondContainer.setOnClickListener {
             mostrarDialogoAgregar()
         }
-
-        // D. Icono Social
-        binding.MenuInferior.menuPendientes.setOnClickListener {
-            Toast.makeText(this, "Próximamente", Toast.LENGTH_SHORT).show()
+        binding.MenuInferior.menuSocial.setOnClickListener {
+            val intent = Intent(this, SocialActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+            startActivity(intent)
+            overridePendingTransition(0, 0)
         }
 
         // E. Icono Tienda
